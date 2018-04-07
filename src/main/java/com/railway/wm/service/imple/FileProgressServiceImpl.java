@@ -15,6 +15,7 @@ import org.springframework.util.CollectionUtils;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,6 +48,8 @@ public class FileProgressServiceImpl implements FileProgressService {
                        analyseResult.setPartNo(resultArray[1]);
                        analyseResult.setUrl(resultArray[2]);
                        analyseResult.setAnalyResult(Integer.parseInt(resultArray[3]));
+                       analyseResult.setCheckDate(DateUtil.getCurrentDate());
+                       analyseResult.setRailStation("hf");
                        resultList.add(analyseResult);
                    }
                 }

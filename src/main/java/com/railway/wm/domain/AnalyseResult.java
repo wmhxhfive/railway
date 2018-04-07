@@ -23,8 +23,24 @@ public class AnalyseResult implements Serializable {
     private Date createDate; // 创建时间
     @Column(nullable = false,columnDefinition = "int default 0")
     private Integer analyResult;
+    private String checkDate; // 机车检测时间
+    private String railStation;//检测车站
 
+    public String getCheckDate() {
+        return checkDate;
+    }
 
+    public void setCheckDate(String checkDate) {
+        this.checkDate = checkDate;
+    }
+
+    public String getRailStation() {
+        return railStation;
+    }
+
+    public void setRailStation(String railStation) {
+        this.railStation = railStation;
+    }
 
     public Long getId() {
         return id;
