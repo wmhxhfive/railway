@@ -10,6 +10,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
@@ -39,9 +41,12 @@ public class WmApplicationTests {
 	}
 	@Test
 	public void  sqlTest(){
-		List<AnalyseResult> results=analyseRepository.findLastResult();
+		List<AnalyseResult> results=analyseRepository.findLatelyCheckResult();
 		System.out.printf(results.size()+"+++++++++++++++++");
-
+		AnalyseResult analyseResult=new AnalyseResult();
+		analyseResult.setRailStation("hf");
+		Page page=analyseRepository.findAll((Pageable) analyseResult);
+		System.out.printf("page"+page);
 	}
 
 }
