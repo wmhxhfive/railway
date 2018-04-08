@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.sql.Date;
 
 @Entity
-@Table(name="analyse_result")
+@Table(name="analyse_result",uniqueConstraints={ @UniqueConstraint(columnNames={"railNo","partNo","checkDate"})})
 public class AnalyseResult implements Serializable {
     private static final long serialVersionUID = -3258839839160856613L;
     @Id

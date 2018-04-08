@@ -45,8 +45,8 @@ public class WmApplicationTests {
 		System.out.printf(results.size()+"+++++++++++++++++");
 		AnalyseResult analyseResult=new AnalyseResult();
 		analyseResult.setRailStation("hf");
-		Page page=analyseRepository.findAll((Pageable) analyseResult);
-		System.out.printf("page"+page);
+
+
 	}
 
 }
