@@ -15,7 +15,6 @@ import org.springframework.util.CollectionUtils;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,38 +29,52 @@ public class FileProgressServiceImpl implements FileProgressService {
 
     @Override
     public void scanFileDirectAndResultIntoDB() {
+        long start=System.currentTimeMillis();
         if (StringUtils.isNullOrEmpty(fileUrl)){
             log.error("文件目录为空");
-        }else{
-            StringBuilder result = new StringBuilder();
-            String filename=new StringBuffer().append(fileUrl).append(DateUtil.getCurrentTimeStr(DateUtil.FORMAT_YYYY_MM_DD)).append(".txt").toString();
+        }else {
+            String filename = new StringBuffer().append(fileUrl).append(DateUtil.getCurrentDateString()).append(".txt").toString();
             File file = new File(filename);
-            List<AnalyseResult>  resultList=new ArrayList<AnalyseResult>();
-            try{
+            List<AnalyseResult> resultList = new ArrayList<AnalyseResult>();
+            try {
                 BufferedReader br = new BufferedReader(new FileReader(file));//构造一个BufferedReader类来读取文件
-                String s = null;
-                while((s = br.readLine())!=null){//使用readLine方法，一次读一行
-                   if (!StringUtils.isNullOrEmpty(s)){
-                      String[] resultArray= s.split("\\|");
-                       AnalyseResult analyseResult=new AnalyseResult();
-                       analyseResult.setRailNo(resultArray[0]);
-                       analyseResult.setPartNo(resultArray[1]);
-                       analyseResult.setUrl(resultArray[2]);
-                       analyseResult.setAnalyResult(Integer.parseInt(resultArray[3]));
-                       analyseResult.setCheckDate(DateUtil.getCurrentDate());
-                       analyseResult.setRailStation("hf");
-                       resultList.add(analyseResult);
-                   }
+                String s;
+                while ((s = br.readLine()) != null) {//使用readLine方法，一次读一行
+                    if (!StringUtils.isNullOrEmpty(s)) {
+                        log.info("文件名:" + filename);
+                        String[] resultArray = s.split("\\|");
+                        AnalyseResult analyseResult = new AnalyseResult();
+                        analyseResult.setRailNo(resultArray[0]);
+                        analyseResult.setPartNo(resultArray[1]);
+                        analyseResult.setUrl(resultArray[2]);
+                        analyseResult.setAnalyResult(Integer.parseInt(resultArray[3]));
+                        analyseResult.setCheckDate(resultArray[4]);
+                        analyseResult.setRailStation(resultArray[5]);
+                        resultList.add(analyseResult);
+                    }
                 }
                 br.close();
-
-                if (!CollectionUtils.isEmpty(resultList)){
-                    analyseRepository.saveAll(resultList);
-                }
-                log.info("_____________"+result);
-            }catch(Exception e){
-                e.printStackTrace();
+            } catch (Exception e) {
+                log.error("文件处理错误", e);
             }
+            //查询当天的分析数据 TODO 时间格式为当天时间
+            List<AnalyseResult> analyseResults = analyseRepository.findAnalyseResultsByCheckDateEquals(resultList.get(0).getCheckDate());
+            if (!CollectionUtils.isEmpty(resultList) && !CollectionUtils.isEmpty(analyseResults))
+            { for (AnalyseResult fi : resultList) {
+                for (AnalyseResult db : analyseResults) {
+                    if (!fi.equals(db)) {
+                        //不存在数据库中的入库操作
+                        analyseRepository.save(fi);
+                        log.info(fi.toString(), "save success");
+                    }
+                }
+
+            }
+            }
+            else if (CollectionUtils.isEmpty(analyseResults)){
+                analyseRepository.saveAll(resultList);
+            }
+            log.info("end wast time{0},ms",System.currentTimeMillis()-start/1000);
         }
     }
 }
