@@ -22,5 +22,6 @@ public interface AnalyseRepository extends JpaRepository<AnalyseResult, Long> {
             nativeQuery = true)
      List<AnalyseResult> findLatelyCheckResult();
 
-    List<AnalyseResult> findAnalyseResultsByCheckDateEquals(String date);
+    List<AnalyseResult> findAnalyseResultsByCheckDateBetween(String begin,String
+                                                             end);
 }

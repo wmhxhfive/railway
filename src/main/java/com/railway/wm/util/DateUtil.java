@@ -436,7 +436,7 @@ public class DateUtil {
 	 * @return  yyyy-MM-dd
 	 */
 	public static String dateIncreaseByDay(String date, int days) {
-		return dateIncreaseByDay(date, ISO_DATE_FORMAT, days);
+		return dateIncreaseByDay(date, ISO_EXPANDED_DATE_FORMAT, days);
 	}
 
 	/**
