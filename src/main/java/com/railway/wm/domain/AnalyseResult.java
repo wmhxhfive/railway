@@ -15,17 +15,17 @@ public class AnalyseResult implements Serializable {
     @Id
     @GeneratedValue
     private Long id;
-    @Column(nullable = false)
+    @Column(nullable = false,length=30)
     private String railNo;  // 车牌号码
-    @Column(nullable = false)
+    @Column(nullable = false,length = 20)
     private String partNo; // 部位标号
-    @Column(nullable = false)
+    @Column(nullable = false,length = 50)
     private String url;// 分析照片存储的位置
     @Column(columnDefinition="timestamp default now()",nullable=false)
     private Date createDate; // 创建时间
     @Column(nullable = false,columnDefinition = "int default 0")
     private Integer analyResult;
-    @Column(nullable = false)
+    @Column(nullable = false,length = 30)
     private String checkDate; // 机车检测时间
     private String railStation;//检测车站
 

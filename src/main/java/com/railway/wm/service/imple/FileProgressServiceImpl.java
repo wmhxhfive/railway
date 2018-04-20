@@ -29,7 +29,7 @@ public class FileProgressServiceImpl implements FileProgressService {
     private AnalyseRepository analyseRepository;
 
     @Override
-    public void scanFileDirectAndResultIntoDB() {
+    public void scanFileDirectAndResultIntoDB() throws Exception {
         long start=System.currentTimeMillis();
         if (StringUtils.isNullOrEmpty(fileUrl)){
             log.error("文件目录为空");
@@ -57,6 +57,7 @@ public class FileProgressServiceImpl implements FileProgressService {
                 br.close();
             } catch (Exception e) {
                 log.error("文件处理错误", e);
+                return;
             }
             if (!CollectionUtils.isEmpty(resultList)){
                 //查询当天的分析数据 TODO 时间格式为当天时间
