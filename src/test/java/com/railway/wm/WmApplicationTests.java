@@ -37,7 +37,11 @@ public class WmApplicationTests {
 	}
 	@Test
 	public void file(){
-		fileProgressService.scanFileDirectAndResultIntoDB();
+		try {
+			//fileProgressService.scanFileDirectAndResultIntoDB();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	@Test
 	public void  sqlTest(){

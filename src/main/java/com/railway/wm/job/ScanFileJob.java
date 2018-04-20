@@ -22,7 +22,12 @@ public class ScanFileJob {
     @Scheduled(cron = "*/10 * * * * ? ")
     public void scanjob(){
         log.info("_________begin_________");
-        fileProgressService.scanFileDirectAndResultIntoDB();
+        try {
+            fileProgressService.scanFileDirectAndResultIntoDB();
+        }catch (Exception e){
+            log.error("error",e);
+        }
+
         log.info("__________end___________");
     }
 }
