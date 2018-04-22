@@ -35,8 +35,13 @@ public class FileProgressServiceImpl implements FileProgressService {
 
     @Override
     public void scanFileDirectAndResultIntoDB() throws Exception {
+<<<<<<< HEAD
         long start = System.currentTimeMillis();
         if (StringUtils.isNullOrEmpty(fileUrl)) {
+=======
+        long start=System.currentTimeMillis();
+        if (StringUtils.isNullOrEmpty(fileUrl)){
+>>>>>>> 691227df9b25b04447d91b5af5c0394ee83c8de0
             log.error("文件目录为空");
             return;
         } else {

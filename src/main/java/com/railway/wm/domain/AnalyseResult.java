@@ -15,6 +15,7 @@ public class AnalyseResult implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+<<<<<<< HEAD
     @Column(nullable = false)
     private Long trainInfoId; //机车编号
 
@@ -29,6 +30,12 @@ public class AnalyseResult implements Serializable {
         this.trainInfoId = trainInfoId;
     }
 
+=======
+    @Column(nullable = false,length=30)
+    private String railNo;  // 车牌号码
+    @Column(nullable = false,length = 20)
+    private String partNo; // 部位标号
+>>>>>>> 691227df9b25b04447d91b5af5c0394ee83c8de0
     @Column(nullable = false,length = 50)
     private String url;// 分析照片存储的位置
 
@@ -37,7 +44,10 @@ public class AnalyseResult implements Serializable {
 
     @Column(nullable = false,columnDefinition = "int default 0")
     private Integer analyResult;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 691227df9b25b04447d91b5af5c0394ee83c8de0
     @Column(nullable = false,length = 30)
     private String checkDate; // 机车检测时间
 
