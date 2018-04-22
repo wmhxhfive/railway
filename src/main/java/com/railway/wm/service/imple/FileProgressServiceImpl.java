@@ -2,11 +2,15 @@ package com.railway.wm.service.imple;
 
 import com.mysql.jdbc.StringUtils;
 import com.railway.wm.dao.AnalyseRepository;
+import com.railway.wm.dao.TrainInfoRepository;
 import com.railway.wm.domain.AnalyseResult;
+import com.railway.wm.domain.FileAnalyseResult;
+import com.railway.wm.domain.TrainInfoDao;
 import com.railway.wm.service.FileProgressService;
 import com.railway.wm.util.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -15,9 +19,7 @@ import org.springframework.util.CollectionUtils;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service("fileProgressService")
 public class FileProgressServiceImpl implements FileProgressService {
@@ -28,30 +30,36 @@ public class FileProgressServiceImpl implements FileProgressService {
     @Autowired
     private AnalyseRepository analyseRepository;
 
+    @Autowired
+    private TrainInfoRepository trainInfoRepository;
+
     @Override
     public void scanFileDirectAndResultIntoDB() throws Exception {
-        long start=System.currentTimeMillis();
-        if (StringUtils.isNullOrEmpty(fileUrl)){
+        long start = System.currentTimeMillis();
+        if (StringUtils.isNullOrEmpty(fileUrl)) {
             log.error("文件目录为空");
-        }else {
+            return;
+        } else {
             String filename = new StringBuffer().append(fileUrl).append(DateUtil.getCurrentDateString()).append(".txt").toString();
             File file = new File(filename);
-            List<AnalyseResult> resultList = new ArrayList<AnalyseResult>();
+            List<AnalyseResult> resultList = new ArrayList<>();
+            List<FileAnalyseResult> fileAnalyseResultList = new ArrayList<>();
+            //1.检测结果格式化为dto
             try {
                 BufferedReader br = new BufferedReader(new FileReader(file));//构造一个BufferedReader类来读取文件
                 String s;
                 while ((s = br.readLine()) != null) {//使用readLine方法，一次读一行
                     if (!StringUtils.isNullOrEmpty(s)) {
-                        log.info("文件名:" + filename);
                         String[] resultArray = s.split("\\|");
-                        AnalyseResult analyseResult = new AnalyseResult();
+                        FileAnalyseResult analyseResult = new FileAnalyseResult();
                         analyseResult.setRailNo(resultArray[0]);
                         analyseResult.setPartNo(resultArray[1]);
                         analyseResult.setUrl(resultArray[2]);
                         analyseResult.setAnalyResult(Integer.parseInt(resultArray[3]));
                         analyseResult.setCheckDate(resultArray[4]);
                         analyseResult.setRailStation(resultArray[5]);
-                        resultList.add(analyseResult);
+                        analyseResult.setErrorReason(resultArray[6]);
+                        fileAnalyseResultList.add(analyseResult);
                     }
                 }
                 br.close();
@@ -59,31 +67,88 @@ public class FileProgressServiceImpl implements FileProgressService {
                 log.error("文件处理错误", e);
                 return;
             }
-            if (!CollectionUtils.isEmpty(resultList)){
-                //查询当天的分析数据 TODO 时间格式为当天时间
-                List<AnalyseResult> analyseResults = analyseRepository.findAnalyseResultsByCheckDateBetween(DateUtil.getCurrentDateString(),
-                       DateUtil.dateIncreaseByDay(DateUtil.getCurrentDateString(),1));
-                if (!CollectionUtils.isEmpty(resultList) && !CollectionUtils.isEmpty(analyseResults))
-                { for (AnalyseResult fi : resultList) {
-                    for (AnalyseResult db : analyseResults) {
-                        if (!fi.equals(db)) {
-                            //不存在数据库中的入库操作
-                            analyseRepository.save(fi);
-                            log.info(fi.toString(), "save success");
+
+            if (!CollectionUtils.isEmpty(fileAnalyseResultList)) {
+                //机车概要信息处理
+                List<TrainInfoDao> trainInfoDaoList = fileInfoChangeTrainInfo(fileAnalyseResultList);
+                List<TrainInfoDao> trainInfoDaoListDb = trainInfoRepository.findTraininfodaoByCheckDateBetween(DateUtil.getCurrentDateString(),
+                        DateUtil.dateIncreaseByDay(DateUtil.getCurrentDateString(), 1));
+                if (CollectionUtils.isEmpty(trainInfoDaoListDb)) {
+                    // 首次插入保存全部机车概要信息
+                    trainInfoRepository.saveAll(trainInfoDaoList);
+                    for (FileAnalyseResult fileResult : fileAnalyseResultList) {
+                        saveAnalyseResult(fileResult);
+                    }
+                } else {
+                    Iterator<TrainInfoDao> iterables = trainInfoDaoList.iterator();
+                    while (iterables.hasNext()) {
+                        TrainInfoDao checkTrainInfo = iterables.next();
+                        for (TrainInfoDao trainInfo : trainInfoDaoListDb
+                                ) {
+                            if (checkTrainInfo.equals(trainInfo)) {
+                                iterables.remove();
+                            }
                         }
                     }
+                    if (CollectionUtils.isEmpty(trainInfoDaoList)) {
+                        log.info("不存在新的机车信息");
+                        return;
+                    }
 
+                    trainInfoRepository.saveAll(trainInfoDaoList);
+                    //机车检测详情处理
+                    List<AnalyseResult> analyseResults = analyseRepository.findAnalyseResultsByCheckDateBetween(DateUtil.getCurrentDateString(),
+                            DateUtil.dateIncreaseByDay(DateUtil.getCurrentDateString(), 1));
+
+                    Iterator<FileAnalyseResult> fileAnalyseResultIterator = fileAnalyseResultList.iterator();
+                    while (fileAnalyseResultIterator.hasNext()) {
+                        FileAnalyseResult fileAnalyseResult = fileAnalyseResultIterator.next();
+                        AnalyseResult result = new AnalyseResult();
+                        BeanUtils.copyProperties(fileAnalyseResult, result);
+                        TrainInfoDao trainInfoDao = trainInfoRepository.findTrainInfoDaoByCheckDateAndRailNoAndRailStation(
+                                fileAnalyseResult.getCheckDate(), fileAnalyseResult.getRailNo(), fileAnalyseResult.getRailStation());
+                        result.setTrainInfoId(trainInfoDao.getId());
+                        for (AnalyseResult analyseResult : analyseResults
+                                ) {
+                            if (result.equals(analyseResult)) {
+                                fileAnalyseResultIterator.remove();
+                            }
+                        }
+
+                    }
+                    if (CollectionUtils.isEmpty(fileAnalyseResultList)) {
+                        log.info("不存在详情信息");
+                    } else {
+                        for (FileAnalyseResult fileAnalyseResult :
+                                fileAnalyseResultList) {
+                            saveAnalyseResult(fileAnalyseResult);
+                        }
+                    }
                 }
-                }
-                else if (CollectionUtils.isEmpty(analyseResults)){
-                    analyseRepository.saveAll(resultList);
-                }
-                log.info("end wast time{0},ms",System.currentTimeMillis()-start/1000);
-            }else{
-                log.error("文件名{0},内容null ",filename);
+            } else {
+                log.info("解析的文件为空。。");
             }
 
-
         }
+    }
+
+    private void saveAnalyseResult(FileAnalyseResult fileResult) {
+        AnalyseResult result = new AnalyseResult();
+        BeanUtils.copyProperties(fileResult, result);
+        TrainInfoDao trainInfoDao = trainInfoRepository.findTrainInfoDaoByCheckDateAndRailNoAndRailStation(result.getCheckDate(), fileResult.getRailNo(), fileResult.getRailStation());
+        result.setTrainInfoId(trainInfoDao.getId());
+        analyseRepository.save(result);
+    }
+
+
+    public List<TrainInfoDao> fileInfoChangeTrainInfo(List<FileAnalyseResult> source) {
+        Set<TrainInfoDao> trainInfoDaoSet = new HashSet<>();
+        for (FileAnalyseResult fileAnalyse : source
+                ) {
+            TrainInfoDao dao = new TrainInfoDao();
+            BeanUtils.copyProperties(fileAnalyse, dao);
+            trainInfoDaoSet.add(dao);
+        }
+        return new ArrayList<>(trainInfoDaoSet);
     }
 }

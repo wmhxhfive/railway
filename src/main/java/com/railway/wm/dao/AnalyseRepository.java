@@ -24,4 +24,12 @@ public interface AnalyseRepository extends JpaRepository<AnalyseResult, Long> {
 
     List<AnalyseResult> findAnalyseResultsByCheckDateBetween(String begin,String
                                                              end);
+
+    /**
+     * 按照机车摘要id以及检测时间获取机车详情信息
+     * @param trainId
+     * @param checkDate
+     * @return
+     */
+    List<AnalyseResult> findAnalyseResultByTrainInfoIdAndCheckDate(Long trainId,String checkDate);
 }

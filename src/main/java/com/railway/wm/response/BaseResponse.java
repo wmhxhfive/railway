@@ -6,7 +6,7 @@ import java.util.List;
 public class BaseResponse implements Serializable {
     String ret;
     String message;
-    List date;
+
 
     public String getRet() {
         return ret;
@@ -24,20 +24,5 @@ public class BaseResponse implements Serializable {
         this.message = message;
     }
 
-    public List getDate() {
-        return date;
-    }
 
-    public void setDate(List date) {
-        this.date = date;
-    }
-
-    @Override
-    public String toString() {
-        return "BaseResponse{" +
-                "ret='" + ret + '\'' +
-                ", message='" + message + '\'' +
-                ", date=" + date +
-                '}';
-    }
 }
