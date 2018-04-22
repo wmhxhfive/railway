@@ -55,11 +55,7 @@ public class WmApplicationTests {
 	@Test
 	public void file(){
 		try {
-<<<<<<< HEAD
 			fileProgressService.scanFileDirectAndResultIntoDB();
-=======
-			//fileProgressService.scanFileDirectAndResultIntoDB();
->>>>>>> 691227df9b25b04447d91b5af5c0394ee83c8de0
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
