@@ -16,8 +16,8 @@ import java.util.List;
  */
 public interface TrainInfoRepository extends JpaRepository<TrainInfoDao, Long> ,JpaSpecificationExecutor<TrainInfoDao> {
 
-     List<TrainInfoDao> findTraininfodaoByCheckDateBetween(String begin,String
-            end);
+     List<TrainInfoDao> findTraininfodaoByCheckDateBetweenAndRailStation(String begin,String
+            end,String railStation);
 
      TrainInfoDao findTrainInfoDaoByCheckDateAndRailNoAndRailStation
              (String checkDate,String railno,String railStation);

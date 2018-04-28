@@ -42,15 +42,15 @@ public class FileProgressServiceImpl implements FileProgressService {
         } else {
             String filename = new StringBuffer().append(fileUrl).append(DateUtil.getCurrentDateString()).append(".txt").toString();
             File file = new File(filename);
-            List<AnalyseResult> resultList = new ArrayList<>();
+
             List<FileAnalyseResult> fileAnalyseResultList = new ArrayList<>();
             //1.检测结果格式化为dto
             try {
                 BufferedReader br = new BufferedReader(new FileReader(file));//构造一个BufferedReader类来读取文件
                 String s;
+                log.info("文件名:" + filename);
                 while ((s = br.readLine()) != null) {//使用readLine方法，一次读一行
                     if (!StringUtils.isNullOrEmpty(s)) {
-                        log.info("文件名:" + filename);
                         String[] resultArray = s.split("\\|");
                         FileAnalyseResult analyseResult = new FileAnalyseResult();
                         analyseResult.setRailNo(resultArray[0]);
@@ -72,11 +72,12 @@ public class FileProgressServiceImpl implements FileProgressService {
             if (!CollectionUtils.isEmpty(fileAnalyseResultList)) {
                 //机车概要信息处理
                 List<TrainInfoDao> trainInfoDaoList = fileInfoChangeTrainInfo(fileAnalyseResultList);
-                List<TrainInfoDao> trainInfoDaoListDb = trainInfoRepository.findTraininfodaoByCheckDateBetween(DateUtil.getCurrentDateString(),
-                        DateUtil.dateIncreaseByDay(DateUtil.getCurrentDateString(), 1));
+                List<TrainInfoDao> trainInfoDaoListDb = trainInfoRepository.findTraininfodaoByCheckDateBetweenAndRailStation(DateUtil.getCurrentDateString(),
+                        DateUtil.dateIncreaseByDay(DateUtil.getCurrentDateString(), 1),fileAnalyseResultList.get(0).getRailStation());
                 if (CollectionUtils.isEmpty(trainInfoDaoListDb)) {
                     // 首次插入保存全部机车概要信息
                     trainInfoRepository.saveAll(trainInfoDaoList);
+                    //保存所有的机车详情信息
                     for (FileAnalyseResult fileResult : fileAnalyseResultList) {
                         saveAnalyseResult(fileResult);
                     }
@@ -97,12 +98,13 @@ public class FileProgressServiceImpl implements FileProgressService {
                     }
 
                     trainInfoRepository.saveAll(trainInfoDaoList);
-                    //机车检测详情处理
+                    //机车检测详情处理 --DB中
                     List<AnalyseResult> analyseResults = analyseRepository.findAnalyseResultsByCheckDateBetween(DateUtil.getCurrentDateString(),
                             DateUtil.dateIncreaseByDay(DateUtil.getCurrentDateString(), 1));
 
                     Iterator<FileAnalyseResult> fileAnalyseResultIterator = fileAnalyseResultList.iterator();
                     while (fileAnalyseResultIterator.hasNext()) {
+                        boolean flag = false;
                         FileAnalyseResult fileAnalyseResult = fileAnalyseResultIterator.next();
                         AnalyseResult result = new AnalyseResult();
                         BeanUtils.copyProperties(fileAnalyseResult, result);
@@ -113,17 +115,13 @@ public class FileProgressServiceImpl implements FileProgressService {
                                 ) {
                             if (result.equals(analyseResult)) {
                                 fileAnalyseResultIterator.remove();
+                                flag=true;
                             }
                         }
-
-                    }
-                    if (CollectionUtils.isEmpty(fileAnalyseResultList)) {
-                        log.info("不存在详情信息");
-                    } else {
-                        for (FileAnalyseResult fileAnalyseResult :
-                                fileAnalyseResultList) {
-                            saveAnalyseResult(fileAnalyseResult);
+                        if(!flag){
+                            analyseRepository.save(result);
                         }
+
                     }
                 }
             } else {
@@ -136,7 +134,8 @@ public class FileProgressServiceImpl implements FileProgressService {
     private void saveAnalyseResult(FileAnalyseResult fileResult) {
         AnalyseResult result = new AnalyseResult();
         BeanUtils.copyProperties(fileResult, result);
-        TrainInfoDao trainInfoDao = trainInfoRepository.findTrainInfoDaoByCheckDateAndRailNoAndRailStation(result.getCheckDate(), fileResult.getRailNo(), fileResult.getRailStation());
+        TrainInfoDao trainInfoDao = trainInfoRepository.findTrainInfoDaoByCheckDateAndRailNoAndRailStation(
+                result.getCheckDate(), fileResult.getRailNo(), fileResult.getRailStation());
         result.setTrainInfoId(trainInfoDao.getId());
         analyseRepository.save(result);
     }

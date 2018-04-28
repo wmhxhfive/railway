@@ -92,6 +92,12 @@ public class TrainInfoDao implements Serializable {
         this.railStation = railStation;
     }
 
+    /**
+     * 机车号/检验站点/检验时间 相等 视为一条机车检测结果
+     * @param obj
+     * @return
+     */
+
     @Override
     public boolean  equals(Object obj) {
         if(obj == null) return false;
