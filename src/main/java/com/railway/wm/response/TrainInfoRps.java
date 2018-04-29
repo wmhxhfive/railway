@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TrainInfoRps extends BaseResponse implements Serializable {
-    List<TrainInfo> trainInfoList=new ArrayList<>();
+    List<TrainInfo> trainInfoList=new ArrayList<TrainInfo>();
     long totalNum;
     int totalPage;
 
@@ -32,4 +32,5 @@ public class TrainInfoRps extends BaseResponse implements Serializable {
     public void setTotalPage(int totalPage) {
         this.totalPage = totalPage;
     }
+
 }

@@ -13,4 +13,8 @@ public interface TrainService {
     TrainInfo4ScreenRep findTrainInfoByStation(String railStation);
 
     TrainInfoRps findTrainInfoByCondition(TrainInfoReq trainInfo);
+
+    TrainInfo4ScreenRep findTrainDetailById(String id);
+
+
 }

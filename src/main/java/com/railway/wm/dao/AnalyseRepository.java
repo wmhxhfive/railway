@@ -32,4 +32,6 @@ public interface AnalyseRepository extends JpaRepository<AnalyseResult, Long> {
      * @return
      */
     List<AnalyseResult> findAnalyseResultByTrainInfoIdAndCheckDate(Long trainId,String checkDate);
+
+    List<AnalyseResult> findAnalyseResultByTrainInfoIdEquals(Long id);
 }

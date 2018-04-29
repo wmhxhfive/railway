@@ -48,7 +48,7 @@ public class TrainServiceImp implements TrainService {
             trainInfo4ScreenRep.setMessage("站点没有机车检测信息");
             return trainInfo4ScreenRep;
         }
-        List<TrainInfo> trainInfos=new ArrayList<>();
+        List<TrainInfo> trainInfos=new ArrayList<TrainInfo>();
         for (TrainInfoDao dao:list
              ) {
             TrainInfo trainInfo=new TrainInfo();
@@ -87,7 +87,7 @@ public class TrainServiceImp implements TrainService {
             public Predicate toPredicate(Root<TrainInfoDao> root,
                                          CriteriaQuery<?> criteriaQuery,
                                          CriteriaBuilder criteriaBuilder) {
-                List<Predicate> predicates = new ArrayList<>();
+                List<Predicate> predicates = new ArrayList<Predicate>();
 
                 if(!StringUtils.isNullOrEmpty(trainInfo.getRailNo())){
                     predicates.add(criteriaBuilder.equal(root.get("railNo"), trainInfo.getRailNo()));
@@ -133,5 +133,28 @@ public class TrainServiceImp implements TrainService {
         }
 
         return req;
+    }
+
+    public TrainInfo4ScreenRep findTrainDetailById(String id) {
+        TrainInfo4ScreenRep reps=new TrainInfo4ScreenRep();
+        List<AnalyseResult> analyseResultList=analyseRepository.findAnalyseResultByTrainInfoIdEquals(Long.parseLong(id));
+        if(CollectionUtils.isEmpty(analyseResultList)){
+            reps.setRet("1");
+            reps.setMessage("不存在记录");
+            return  reps;
+        }else{
+            reps.setRet("0");
+            reps.setMessage("ok");
+            List<TrainDetailInfo> trainDetailInfoList=new ArrayList<>();
+            for (AnalyseResult result:
+                    analyseResultList) {
+                TrainDetailInfo trainDetailInfo=new TrainDetailInfo();
+                BeanUtils.copyProperties(result,trainDetailInfo);
+                trainDetailInfoList.add(trainDetailInfo);
+            }
+            reps.getTrainDetailInfos().addAll(trainDetailInfoList);
+        }
+
+        return reps;
     }
 }
