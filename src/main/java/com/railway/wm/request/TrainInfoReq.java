@@ -1,5 +1,6 @@
 package com.railway.wm.request;
 
+import com.alibaba.fastjson.JSONObject;
 import com.railway.wm.response.BaseResponse;
 
 import javax.validation.constraints.NotNull;
@@ -71,5 +72,13 @@ public class TrainInfoReq extends BaseResponse implements Serializable {
 
     public void setPageSize(int pageSize) {
         this.pageSize = pageSize;
+    }
+
+    public static void main(String[] args) {
+        TrainInfoReq req=new TrainInfoReq();
+        req.setPageSize(10);
+        req.setPage(0);
+        req.setRailStation("hf");
+        System.out.printf(JSONObject.toJSONString(req));
     }
 }
