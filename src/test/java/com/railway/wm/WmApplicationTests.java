@@ -5,23 +5,16 @@ import com.railway.wm.dao.TrainInfoRepository;
 import com.railway.wm.dao.UserRepository;
 import com.railway.wm.domain.AnalyseResult;
 import com.railway.wm.domain.TrainInfoDao;
-import com.railway.wm.domain.User;
+import com.railway.wm.domain.UserInfoDao;
 import com.railway.wm.request.TrainInfoReq;
-import com.railway.wm.response.TrainInfo;
 import com.railway.wm.response.TrainInfo4ScreenRep;
 import com.railway.wm.response.TrainInfoRps;
 import com.railway.wm.service.FileProgressService;
 import com.railway.wm.service.TrainService;
-import jdk.internal.instrumentation.TypeMapping;
-import net.minidev.json.JSONObject;
-import net.minidev.json.JSONValue;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
@@ -46,7 +39,7 @@ public class WmApplicationTests {
 
 	@Test
 	public void contextLoads() {
-		User user=new User();
+		UserInfoDao user=new UserInfoDao();
 		user.setMoblie("15618409916");
 		user.setName("wm");
 		userRepository.save(user);

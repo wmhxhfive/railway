@@ -2,21 +2,30 @@ package com.railway.wm.domain;
 
 
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.sql.Date;
+
 @Entity
 @Table(name="t_user")
-public class User implements Serializable {
+public class UserInfoDao implements Serializable {
     private static final long serialVersionUID = -3258839839160856613L;
     @Id
     @GeneratedValue
     private Long id;
     private String name;
     private String moblie;
-    private  String password;
+    private String password;
+    @Column(columnDefinition="timestamp default now()",nullable=false)
+    private Date createDate; // 创建时间
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
 
     public String getPassword() {
         return password;
