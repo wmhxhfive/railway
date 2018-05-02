@@ -19,7 +19,7 @@ public class ScanFileJob {
      */
     @Autowired
     FileProgressService fileProgressService;
-    //@Scheduled(cron = "*/10 * * * * ? ")
+    @Scheduled(cron = "*/10 * * * * ? ")
     public void scanjob(){
         log.info("_________begin_________");
         try {

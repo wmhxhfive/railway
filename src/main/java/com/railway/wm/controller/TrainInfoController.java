@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 
 @Controller
@@ -30,7 +31,7 @@ public class TrainInfoController {
     TrainService trainService;
     @RequestMapping(value="/screen")
     @ResponseBody
-    public TrainInfo4ScreenRep getScreenInfo( @Valid String railStation ){
+    public TrainInfo4ScreenRep getScreenInfo( @NotNull String railStation ){
         log.info("getScreenInfo,request{}",JSONObject.toJSON(railStation));
         TrainInfo4ScreenRep trainInfo4ScreenRep=trainService.findTrainInfoByStation(railStation);
         log.info("getScreenInfo,response{}",JSONObject.toJSON(trainInfo4ScreenRep));
@@ -58,7 +59,7 @@ public class TrainInfoController {
      */
     @RequestMapping(value="/detail")
     @ResponseBody
-    public TrainInfo4ScreenRep getTrainDetailInfos( String id ){
+    public TrainInfo4ScreenRep getTrainDetailInfos(@NotNull String id ){
         log.info("getTrainInfos,request{}",id);
         TrainInfo4ScreenRep trainInfoRps=trainService.findTrainDetailById(id);
         log.info("getTrainInfos,response{}",JSONObject.toJSON(trainInfoRps));

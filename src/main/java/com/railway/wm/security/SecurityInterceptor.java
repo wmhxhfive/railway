@@ -22,7 +22,7 @@ public class SecurityInterceptor implements HandlerInterceptor {
 
         Object obj = request.getSession().getAttribute("cur_user");
         if (obj == null || !(obj instanceof UserInfoDao)) {
-            response.sendRedirect(request.getContextPath() + "/login");
+            //response.sendRedirect(request.getContextPath() + "/login");
             return false;
         }
 
