@@ -5,8 +5,8 @@
 
 	<groupId>com.railway</groupId>
 	<artifactId>wm</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<version>1.0</version>
+	<packaging>war</packaging>
 
 	<name>wm</name>
 	<description>机车检测系统</description>
@@ -52,8 +52,8 @@
 		</dependency>
 		<dependency>
 			<groupId>com.alibaba</groupId>
-			<artifactId>fastJson</artifactId>
-			<version>1.2.17</version>
+			<artifactId>fastjson</artifactId>
+			<version>1.2.9</version>
 		</dependency>
 
 	</dependencies>
@@ -68,8 +68,8 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>6</source>
-                    <target>6</target>
+                    <source>8</source>
+                    <target>8</target>
                 </configuration>
             </plugin>
         </plugins>
