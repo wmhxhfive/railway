@@ -1,10 +1,13 @@
 package com.railway.wm.request;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 public class UserRequest implements Serializable {
+    @NotNull
     private String name;
     private String moblie;
+    @NotNull
     private String password;
 
     public String getName() {

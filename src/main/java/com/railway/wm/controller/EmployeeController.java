@@ -7,10 +7,12 @@ import com.railway.wm.service.UserInfoService;
 import com.railway.wm.util.CurrentUserUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 
 @RestController
 @RequestMapping("/sys")
@@ -25,7 +27,9 @@ public class EmployeeController {
      * @return
      */
     @RequestMapping("/register")
-    public BaseResponse loginVerify(@Valid String username, @Valid String password){
+    public BaseResponse register(@RequestBody UserRequest userRequest){
+        String username=userRequest.getName();
+        String password=userRequest.getPassword();
         BaseResponse baseResponse=new BaseResponse();
         if(userInfoService.findUserInfoByName(username)){
             baseResponse.setRet("1");
@@ -35,7 +39,6 @@ public class EmployeeController {
         }
         UserInfoDao result=userInfoService.saveUserInfo(username,password);
         CurrentUserUtils.getInstance().setUser(result);
-        System.out.printf(CurrentUserUtils.getInstance().getmax()+"");
         baseResponse.setRet("0");
         baseResponse.setMessage("注册成功");
         return baseResponse;
@@ -47,7 +50,8 @@ public class EmployeeController {
      * @return
      */
     @RequestMapping("/check")
-    public BaseResponse loginVerify(@Valid String username){
+    public BaseResponse loginVerify(@NotBlank(message = "用户名不能为空")
+                                        @RequestParam(name = "username") String username){
         BaseResponse baseResponse=new BaseResponse();
         if(userInfoService.findUserInfoByName(username)){
             baseResponse.setRet("1");
