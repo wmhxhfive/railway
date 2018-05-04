@@ -92,12 +92,13 @@ public class FileProgressServiceImpl implements FileProgressService {
                             }
                         }
                     }
-                    if (CollectionUtils.isEmpty(trainInfoDaoList)) {
+                    if (!CollectionUtils.isEmpty(trainInfoDaoList)) {
+                        trainInfoRepository.saveAll(trainInfoDaoList);
+                    }else{
                         log.info("不存在新的机车信息");
-                        return;
                     }
 
-                    trainInfoRepository.saveAll(trainInfoDaoList);
+                    //trainInfoRepository.saveAll(trainInfoDaoList);
                     //机车检测详情处理 --DB中
                     List<AnalyseResult> analyseResults = analyseRepository.findAnalyseResultsByCheckDateBetween(DateUtil.getCurrentDateString(),
                             DateUtil.dateIncreaseByDay(DateUtil.getCurrentDateString(), 1));
