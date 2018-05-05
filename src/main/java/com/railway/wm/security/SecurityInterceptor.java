@@ -16,7 +16,7 @@ public class SecurityInterceptor implements HandlerInterceptor {
         HttpSession session = request.getSession();
 
 //            判断是否已有该用户登录的session
-        if(session.getAttribute("cur_user") != null){
+/*        if(session.getAttribute("cur_user") != null){
             return true;
         }
 
@@ -24,7 +24,7 @@ public class SecurityInterceptor implements HandlerInterceptor {
         if (obj == null || !(obj instanceof UserInfoDao)) {
             //response.sendRedirect(request.getContextPath() + "/login");
             return false;
-        }
+        }*/
 
         return true;
     }

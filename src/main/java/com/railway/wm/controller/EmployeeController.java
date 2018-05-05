@@ -5,10 +5,9 @@ import com.railway.wm.request.UserRequest;
 import com.railway.wm.response.BaseResponse;
 import com.railway.wm.service.UserInfoService;
 import com.railway.wm.util.CurrentUserUtils;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
@@ -26,7 +25,7 @@ public class EmployeeController {
      * @param password
      * @return
      */
-    @RequestMapping("/register")
+    @RequestMapping(value = "/register",method = RequestMethod.POST)
     public BaseResponse register(@RequestBody UserRequest userRequest){
         String username=userRequest.getName();
         String password=userRequest.getPassword();
@@ -49,7 +48,7 @@ public class EmployeeController {
      * @param username
      * @return
      */
-    @RequestMapping("/check")
+    @RequestMapping(value = "/check",method = {RequestMethod.GET,RequestMethod.POST})
     public BaseResponse loginVerify(@NotBlank(message = "用户名不能为空")
                                         @RequestParam(name = "username") String username){
         BaseResponse baseResponse=new BaseResponse();
@@ -70,7 +69,9 @@ public class EmployeeController {
      * @param
      * @return
      */
-    @RequestMapping("/login")
+    @ApiOperation(value="创建用户", notes="根据User对象创建用户")
+    @ApiImplicitParam(name = "user", value = "用户详细实体user", required = true, dataType = "User")
+    @RequestMapping(value = "/login",method = RequestMethod.POST)
     public BaseResponse loginVerify(@RequestBody UserRequest userRequest){
         BaseResponse baseResponse=new BaseResponse();
         UserInfoDao userInfoDao=userInfoService.findUserInfoByNameAndPassword(userRequest.getName(),userRequest.getPassword());

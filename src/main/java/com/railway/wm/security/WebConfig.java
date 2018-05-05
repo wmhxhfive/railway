@@ -28,6 +28,10 @@ public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationCon
         //registry.addResourceHandler("/templates/**").addResourceLocations(ResourceUtils.CLASSPATH_URL_PREFIX+"/templates/");
 
        // super.addResourceHandlers(registry);
+        registry.addResourceHandler("swagger-ui.html")
+                .addResourceLocations("classpath:/META-INF/resources/");
+        registry.addResourceHandler("/webjars/**") .
+                addResourceLocations("classpath:/META-INF/resources/webjars/");
     }
 
     @Override
@@ -41,5 +45,6 @@ public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationCon
         registry.addInterceptor(new SecurityInterceptor()).addPathPatterns("/trainInfo/**").excludePathPatterns("/login");
         super.addInterceptors(registry);
     }
+
 
 }

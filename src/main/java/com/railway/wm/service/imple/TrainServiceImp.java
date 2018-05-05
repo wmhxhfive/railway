@@ -81,6 +81,8 @@ public class TrainServiceImp implements TrainService {
     public TrainInfoRps findTrainInfoByCondition(TrainInfoReq trainInfo) {
 
         TrainInfoRps req=new TrainInfoRps();
+        req.setRet("0");
+        req.setMessage("success");
         // 创建查询
         Specification querySpecifi = new Specification<TrainInfoDao>() {
             @Override
@@ -105,7 +107,7 @@ public class TrainServiceImp implements TrainService {
                 if(!StringUtils.isNullOrEmpty(trainInfo.getIsNormal())){
                     predicates.add(criteriaBuilder.equal(root.get("isNormal"), trainInfo.getIsNormal()));
                 }
-                return criteriaBuilder.or(predicates.toArray(new Predicate[predicates.size()]));
+                return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
             }
         };
 
@@ -128,8 +130,7 @@ public class TrainServiceImp implements TrainService {
             req.getTrainInfoList().addAll(resultList);
             req.setTotalNum(re.getTotalElements());
             req.setTotalPage(re.getTotalPages());
-            req.setRet("0");
-            req.setMessage("success");
+
         }
 
         return req;
