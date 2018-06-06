@@ -1,0 +1,112 @@
+<template>
+  <div>
+    <header-view v-bind:username="username"></header-view>
+    <div class="menu">
+      <template v-for='item,index in btnList'>
+        <span :class="{ current: index===mark }" @click="open_page(index, item.page)">{{item.name}}</span>
+      </template>
+    </div>
+    <div class="my-iframe">
+      <iframe name="myframe" v-bind:src="iframeURL"></iframe>
+    </div>
+  </div>    
+</template>
+
+<script>
+import Header from '@/components/common/header'
+
+export default {
+  name: 'manager',
+  data () {
+    return {
+      username: '',
+      mark: 0,
+      iframeURL: '#/index',
+      btnList: [{
+        name: '首页',
+        page: 'index'
+      },{
+        name: '机车列表',
+        page: 'page_Train'
+      },{
+        name: '添加新用户',
+        page: 'page_addUser'
+      }]
+    }
+  },
+  beforeCreate(){
+    if(!this.getCookie('token')){
+      window.location.href="#/login";
+    }
+  },
+  components:{
+    'header-view': Header
+  },
+  created() {
+    this.username = localStorage.getItem('username') || 'admin';
+  },
+  methods:{
+    open_page(index, p_url){
+      if(this.mark == index){
+        myframe.location.reload();
+      }else{
+        this.mark = index;
+        this.iframeURL = '#/'+p_url;
+      }
+    }
+  },
+  mounted(){
+  }
+}
+</script>
+
+<style>
+ul,li {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.menu {
+  width: 200px;
+  background: #2f2d2d;
+  position: absolute;
+  top: 66px;
+  bottom: 0;
+  color: #d1cfcf;
+}
+.menu>span {
+  display: block;
+  padding: 15px 20px;
+  font-size: 18px;
+  font-weight: lighter;
+  cursor: pointer;
+  border-bottom: 0.5px solid #838282;
+  transition:0.3s;
+  -webkit-transition:0.3s; /* Safari */
+
+}
+.menu>span:hover {
+  background-color: #64b3e4;
+  color: #fff;
+}
+.menu>span.current {
+  background-color: #3094d2;
+  color: #fff;
+}
+.my-iframe {
+  display: block;
+  position: absolute;
+  top: 66px;
+  bottom: 0;
+  right: 0;
+  left: 200px;
+  overflow: hidden;
+}
+.my-iframe iframe{
+  border: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+</style>

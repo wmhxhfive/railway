@@ -1,0 +1,101 @@
+<template>
+  <div class="monitor">
+    <div class="body-bg"></div>
+    <div class="train-bar">
+      <train-view :trainInfos="trainInfos" :trainDetailInfos="trainDetailInfos" v-on:changeTrain="changeTrain"></train-view>
+      <div class="more-train">
+        <img src="../../assets/train-header.png"/>
+        进站记录
+      </div>
+    </div>
+    <div class="detail-box">
+      <train-detail :trainInfo="trainInfos[trainIndex]" showfoot="true" :trainDetailInfos="trainDetailInfos"></train-detail>
+    </div>
+  </div>    
+</template>
+
+<script>
+import train from '@/components/monitor/train'
+import trainInfo from '@/components/monitor/trainDetail'
+import config from '@/config'
+var QS=require('qs');
+
+export default {
+  name: 'monitor',
+  data () {
+    return {
+      trainIndex: 0,
+      trainInfos: [{"id":14,"railNo":"DF07 0080","isNormal":1,"checkDate":"2018-04-28 23:00:01","railStation":"hf","errorReason":"机车标签外观有无缺损、裂纹、变形"},{"id":34,"railNo":"DF07 0081","isNormal":null,"checkDate":"2018-04-28 23:00:01","railStation":"hf","errorReason":"焊装支架有无开焊、变形"},{"id":17,"railNo":"DF07 0101","isNormal":null,"checkDate":"2018-04-28 23:00:00","railStation":"hf","errorReason":"6个安装螺丝有无缺失、缺损、松动"},{"id":16,"railNo":"DF08 0080","isNormal":null,"checkDate":"2018-04-28 20:00:01","railStation":"hf","errorReason":"开口销有无缺失"},{"id":15,"railNo":"DF07 0077","isNormal":null,"checkDate":"2018-04-28 20:00:00","railStation":"hf","errorReason":"连接电缆是否绑扎牢固、线缆固定卡有无脱落、电缆外观有无变形、缺损"},{"id":16,"railNo":"DF08 0080","isNormal":null,"checkDate":"2018-04-28 20:00:01","railStation":"hf","errorReason":"开口销有无缺失"},{"id":15,"railNo":"DF07 0077","isNormal":null,"checkDate":"2018-04-28 20:00:00","railStation":"hf","errorReason":"连接电缆是否绑扎牢固、线缆固定卡有无脱落、电缆外观有无变形、缺损"}],
+      trainDetailInfos: [{"trainInfoId":14,"partNo":"Ⅰ端","url":"http://106.12.21.105/page/tmp_train.jpg","analyResult":0,"checkDate":"2018-04-28 23:00:01"},{"trainInfoId":14,"partNo":"Ⅱ端","url":"http://106.12.21.105/page/tmp_zh.jpg","analyResult":0,"checkDate":"2018-04-28 23:00:01"},{"trainInfoId":14,"partNo":"1轴","url":"http://106.12.21.105/page/tmp_zh.jpg","analyResult":0,"checkDate":"2018-04-28 23:00:01"},{"trainInfoId":14,"partNo":"2轴","url":"http://106.12.21.105/page/tmp_zh.jpg","analyResult":0,"checkDate":"2018-04-28 23:00:01"},{"trainInfoId":14,"partNo":"3轴","url":"http://106.12.21.105/page/tmp_zh.jpg","analyResult":1,"checkDate":"2018-04-28 23:00:01"},{"trainInfoId":14,"partNo":"4轴","url":"http://106.12.21.105/page/tmp_zh.jpg","analyResult":0,"checkDate":"2018-04-28 23:00:01"},{"trainInfoId":14,"partNo":"5轴","url":"http://106.12.21.105/page/tmp_zh.jpg","analyResult":0,"checkDate":"2018-04-28 23:00:01"}]
+    }
+  },
+  components:{
+    'train-view': train,
+    'train-detail': trainInfo
+  },
+  created() {
+    this.$ajax({
+      method: 'post',
+      url: config.urlList.trainInfo,
+      transformRequest: [function (data) {
+        return QS.stringify(data);
+      }],
+      data: { 
+        railStation : 'hf'
+       }
+    }).then((data) => {
+      console.log(data);
+      if(data.status == 200){
+        // this.trainInfos=data.data.trainInfos || [];
+        // this.trainDetailInfos = data.data.trainDetailInfos || [];
+      }
+    })
+  },
+  methods:{
+    changeTrain(index){
+      this.trainIndex = index;
+    }
+  },
+  mounted(){
+  }
+}
+</script>
+
+<style>
+.body-bg{
+  background-color: #d7d6d6;
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+}
+ul,li{
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.train-bar{
+  width: 12%;
+  float: left;
+  overflow: hidden;
+}
+.more-train{
+  height: 7vh;
+  line-height:7vh;
+  color: #b3b3b3;
+  text-align: center;
+  background-color: #666666;
+  position: relative;
+  cursor: pointer;
+}
+.more-train img{
+  height: 25px;
+  vertical-align: middle;
+  margin-right: 5px;
+}
+.detail-box{  
+  width: 88%;
+  float: left;
+}
+</style>
