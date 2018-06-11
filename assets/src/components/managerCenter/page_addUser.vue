@@ -74,7 +74,7 @@ export default {
           return JSON.stringify(data);
         }],
         data: { 
-          username : this.username,
+          name : this.username,
           password: md5(this.password),
           moblie: this.moblie
          }

@@ -1,5 +1,5 @@
 <template>
-  <div class="train-detail">
+  <section>
     <div class="detail-info" >
         <span>机车ID：<span class="time">{{trainInfo.id}}</span></span>
         <span>机车型号：<span class="time">{{trainInfo.railNo}}</span></span>
@@ -7,24 +7,22 @@
         <span>进站时间： <span class="time">{{new Date(trainInfo.checkDate).format('yyyy年mm月dd日 hh:ii:ss')}}</span></span>
     </div>
     <ul class="img-list">
-      <li v-for="item in trainDetailInfos" v-if="item.trainInfoId == trainInfo.id" :style="item.analyResult?'border: 2px solid red;':''" v-on:click="showImage(item.url, item.partNo)">
+      <li v-for="item in trainDetailInfos" v-if="item.trainInfoId == trainInfo.id" :class="{'is-error':item.analyResult}" v-on:click="showImage(item.url, item.partNo)">
         <img :src="item.url"/>
-        <span class="analysis-res">
-          <img v-show="item.analyResult" src="../../assets/warn-tg.png"/>
-        </span>
         <div class="part-no">{{item.partNo}}</div>
+        <span class="analysis-res" v-if="item.analyResult">
+          <img src="../../assets/warn-tg.png"/>
+        </span>
+        <div class="err-cont" v-if="item.analyResult">{{item.errorReason}}</div>
       </li>
     </ul>
-      <div class="err-cont">
-        <div class="item">* {{trainInfo.errorReason}}</div>
-      </div>
     <div class="err-corner" v-show="showfoot">
       <div>合肥站</div>
       <img src="../../assets/logo.png"/>
       <span>机车设备智能检测</span>
     </div>
     <mydialog-bar v-model="sendVal" type="cancel" :title="Title" :content="Content" @:cancel="clickCancel()"></mydialog-bar>
-  </div>    
+  </section>    
 </template>
 
 <script>
@@ -54,10 +52,6 @@ export default {
 </script>
 
 <style>
-.train-detail{
-  width: 100%;
-  position: relative;
-}
 .detail-info {
   height: 9vh; 
   line-height: 9vh;
@@ -73,17 +67,14 @@ export default {
 }
 .img-list {
   margin: 0 3vh;
-  display: flex;
-  display:-webkit-flex; /* 容器显示属性 */
-  -webkit-flex-wrap:wrap; /* 容器内元素可换行 */
-  -webkit-justify-content: space-between; /* 间距平分 */
-  min-height: 81vh;
-  text-align: center;
 }
-.img-list li,.err-cont{
+.img-list .is-error{
+  border: 2px solid red;
+}
+.img-list li{
   width: 33%;
-  height: 28vh;
-  margin: 0.5vh 0;
+  height: 28.5vh;
+  margin: 0.5vh 0.1%;
   display: inline-block;
   position: relative;
   border: 1px solid #3094d2;
@@ -93,17 +84,11 @@ export default {
   -ms-box-sizing: border-box; /*IE8*/
   box-sizing: border-box;
   cursor: pointer;
-}
-.err-cont {
-    width: calc(66% - 3vh);
-    padding: 2vh;
-    overflow-y: auto;
-    position: absolute;
-    bottom: 0;
-    right: 3vh;
+  text-align: center;
 }
 .img-list img{
-  height: 100%;
+  max-height: 100%;
+  max-width: 100%;
 }
 .img-list .analysis-res{
   height: 30px;
@@ -113,25 +98,29 @@ export default {
   position: absolute;
   z-index: 2;
 }
-.img-list .part-no{
+.img-list .part-no {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #565656;
+    color: #fff;
+    padding: 5px 0;
+    width: 45px;
+}
+.img-list .err-cont{
   height: 1.5em;
+  line-height: 1.5em;
   text-align: center;
   bottom: 0;
   position: absolute;
   width: 100%;
-  background-color: rgb(0,0,0, 0.6);
-  color: #fff;
-}
-.err-cont .item{
+  background-color: rgb(255,255,255, 0.8);
   color: #ef7f12;
-  font-size: 20px;
-  position: relative;
-  z-index: 11;
 }
 .err-corner{
   position: absolute;
   right: 2.5vh;
-  bottom: -1vh;
+  bottom: 3vh;
   text-align: right;
   font-size: 2em;
   background-color: #d7d6d6;

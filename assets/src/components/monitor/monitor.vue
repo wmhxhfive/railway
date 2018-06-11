@@ -1,6 +1,5 @@
 <template>
   <div class="monitor">
-    <div class="body-bg"></div>
     <div class="train-bar">
       <train-view :trainInfos="trainInfos" :trainDetailInfos="trainDetailInfos" v-on:changeTrain="changeTrain"></train-view>
       <div class="more-train">
@@ -18,7 +17,7 @@
 import train from '@/components/monitor/train'
 import trainInfo from '@/components/monitor/trainDetail'
 import config from '@/config'
-var QS=require('qs');
+var QS = require('qs');
 
 export default {
   name: 'monitor',
@@ -26,7 +25,7 @@ export default {
     return {
       trainIndex: 0,
       trainInfos: [{"id":14,"railNo":"DF07 0080","isNormal":1,"checkDate":"2018-04-28 23:00:01","railStation":"hf","errorReason":"机车标签外观有无缺损、裂纹、变形"},{"id":34,"railNo":"DF07 0081","isNormal":null,"checkDate":"2018-04-28 23:00:01","railStation":"hf","errorReason":"焊装支架有无开焊、变形"},{"id":17,"railNo":"DF07 0101","isNormal":null,"checkDate":"2018-04-28 23:00:00","railStation":"hf","errorReason":"6个安装螺丝有无缺失、缺损、松动"},{"id":16,"railNo":"DF08 0080","isNormal":null,"checkDate":"2018-04-28 20:00:01","railStation":"hf","errorReason":"开口销有无缺失"},{"id":15,"railNo":"DF07 0077","isNormal":null,"checkDate":"2018-04-28 20:00:00","railStation":"hf","errorReason":"连接电缆是否绑扎牢固、线缆固定卡有无脱落、电缆外观有无变形、缺损"},{"id":16,"railNo":"DF08 0080","isNormal":null,"checkDate":"2018-04-28 20:00:01","railStation":"hf","errorReason":"开口销有无缺失"},{"id":15,"railNo":"DF07 0077","isNormal":null,"checkDate":"2018-04-28 20:00:00","railStation":"hf","errorReason":"连接电缆是否绑扎牢固、线缆固定卡有无脱落、电缆外观有无变形、缺损"}],
-      trainDetailInfos: [{"trainInfoId":14,"partNo":"Ⅰ端","url":"http://106.12.21.105/page/tmp_train.jpg","analyResult":0,"checkDate":"2018-04-28 23:00:01"},{"trainInfoId":14,"partNo":"Ⅱ端","url":"http://106.12.21.105/page/tmp_zh.jpg","analyResult":0,"checkDate":"2018-04-28 23:00:01"},{"trainInfoId":14,"partNo":"1轴","url":"http://106.12.21.105/page/tmp_zh.jpg","analyResult":0,"checkDate":"2018-04-28 23:00:01"},{"trainInfoId":14,"partNo":"2轴","url":"http://106.12.21.105/page/tmp_zh.jpg","analyResult":0,"checkDate":"2018-04-28 23:00:01"},{"trainInfoId":14,"partNo":"3轴","url":"http://106.12.21.105/page/tmp_zh.jpg","analyResult":1,"checkDate":"2018-04-28 23:00:01"},{"trainInfoId":14,"partNo":"4轴","url":"http://106.12.21.105/page/tmp_zh.jpg","analyResult":0,"checkDate":"2018-04-28 23:00:01"},{"trainInfoId":14,"partNo":"5轴","url":"http://106.12.21.105/page/tmp_zh.jpg","analyResult":0,"checkDate":"2018-04-28 23:00:01"}]
+      trainDetailInfos:  [{"trainInfoId":14,"partNo":"Ⅰ端","url":"http://106.12.21.105/page/tmp_train.jpg","analyResult":0,"checkDate":"2018-04-28 23:00:01"},{"trainInfoId":14,"partNo":"Ⅱ端","url":"http://106.12.21.105/page/tmp_zh.jpg","analyResult":0,"checkDate":"2018-04-28 23:00:01"},{"trainInfoId":14,"partNo":"1轴","url":"http://106.12.21.105/page/tmp_zh.jpg","analyResult":0,"checkDate":"2018-04-28 23:00:01"},{"trainInfoId":14,"partNo":"2轴","url":"http://106.12.21.105/page/tmp_zh.jpg","analyResult":0,"checkDate":"2018-04-28 23:00:01"},{"trainInfoId":14,"partNo":"3轴","url":"http://106.12.21.105/page/tmp_zh.jpg","analyResult":1,"checkDate":"2018-04-28 23:00:01","errorReason":"这里是故障原因"},{"trainInfoId":14,"partNo":"4轴","url":"http://106.12.21.105/page/tmp_zh.jpg","analyResult":0,"checkDate":"2018-04-28 23:00:01"},{"trainInfoId":14,"partNo":"5轴","url":"http://106.12.21.105/page/tmp_zh.jpg","analyResult":0,"checkDate":"2018-04-28 23:00:01"}]
     }
   },
   components:{
@@ -62,14 +61,6 @@ export default {
 </script>
 
 <style>
-.body-bg{
-  background-color: #d7d6d6;
-  position: absolute;
-  top: 0;
-  right: 0;
-  left: 0;
-  bottom: 0;
-}
 ul,li{
   list-style: none;
   padding: 0;
@@ -77,8 +68,13 @@ ul,li{
 }
 .train-bar{
   width: 12%;
-  float: left;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  display: inline-block;
   overflow: hidden;
+  background-color: #908f8f;
 }
 .more-train{
   height: 7vh;
@@ -86,7 +82,9 @@ ul,li{
   color: #b3b3b3;
   text-align: center;
   background-color: #666666;
-  position: relative;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
   cursor: pointer;
 }
 .more-train img{
@@ -96,6 +94,13 @@ ul,li{
 }
 .detail-box{  
   width: 88%;
-  float: left;
+  display: inline-block;
+  left: 12%;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  position: absolute;
+  background-color: #d7d6d6;
+  overflow:hidden;
 }
 </style>
