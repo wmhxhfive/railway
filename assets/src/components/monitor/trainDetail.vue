@@ -85,6 +85,7 @@ export default {
   box-sizing: border-box;
   cursor: pointer;
   text-align: center;
+  background: #ededed url('../../assets/default_img.png') no-repeat center/auto 60%;
 }
 .img-list img{
   max-height: 100%;

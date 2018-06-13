@@ -24,8 +24,8 @@ export default {
   data () {
     return {
       trainIndex: 0,
-      trainInfos: [{"id":14,"railNo":"DF07 0080","isNormal":1,"checkDate":"2018-04-28 23:00:01","railStation":"hf","errorReason":"机车标签外观有无缺损、裂纹、变形"},{"id":34,"railNo":"DF07 0081","isNormal":null,"checkDate":"2018-04-28 23:00:01","railStation":"hf","errorReason":"焊装支架有无开焊、变形"},{"id":17,"railNo":"DF07 0101","isNormal":null,"checkDate":"2018-04-28 23:00:00","railStation":"hf","errorReason":"6个安装螺丝有无缺失、缺损、松动"},{"id":16,"railNo":"DF08 0080","isNormal":null,"checkDate":"2018-04-28 20:00:01","railStation":"hf","errorReason":"开口销有无缺失"},{"id":15,"railNo":"DF07 0077","isNormal":null,"checkDate":"2018-04-28 20:00:00","railStation":"hf","errorReason":"连接电缆是否绑扎牢固、线缆固定卡有无脱落、电缆外观有无变形、缺损"},{"id":16,"railNo":"DF08 0080","isNormal":null,"checkDate":"2018-04-28 20:00:01","railStation":"hf","errorReason":"开口销有无缺失"},{"id":15,"railNo":"DF07 0077","isNormal":null,"checkDate":"2018-04-28 20:00:00","railStation":"hf","errorReason":"连接电缆是否绑扎牢固、线缆固定卡有无脱落、电缆外观有无变形、缺损"}],
-      trainDetailInfos:  [{"trainInfoId":14,"partNo":"Ⅰ端","url":"http://106.12.21.105/page/tmp_train.jpg","analyResult":0,"checkDate":"2018-04-28 23:00:01"},{"trainInfoId":14,"partNo":"Ⅱ端","url":"http://106.12.21.105/page/tmp_zh.jpg","analyResult":0,"checkDate":"2018-04-28 23:00:01"},{"trainInfoId":14,"partNo":"1轴","url":"http://106.12.21.105/page/tmp_zh.jpg","analyResult":0,"checkDate":"2018-04-28 23:00:01"},{"trainInfoId":14,"partNo":"2轴","url":"http://106.12.21.105/page/tmp_zh.jpg","analyResult":0,"checkDate":"2018-04-28 23:00:01"},{"trainInfoId":14,"partNo":"3轴","url":"http://106.12.21.105/page/tmp_zh.jpg","analyResult":1,"checkDate":"2018-04-28 23:00:01","errorReason":"这里是故障原因"},{"trainInfoId":14,"partNo":"4轴","url":"http://106.12.21.105/page/tmp_zh.jpg","analyResult":0,"checkDate":"2018-04-28 23:00:01"},{"trainInfoId":14,"partNo":"5轴","url":"http://106.12.21.105/page/tmp_zh.jpg","analyResult":0,"checkDate":"2018-04-28 23:00:01"}]
+      trainInfos: [],//[{"id":14,"railNo":"DF07 0080","isNormal":1,"checkDate":"2018-04-28 23:00:01","railStation":"hf","errorReason":"机车标签外观有无缺损、裂纹、变形"},{"id":34,"railNo":"DF07 0081","isNormal":null,"checkDate":"2018-04-28 23:00:01","railStation":"hf","errorReason":"焊装支架有无开焊、变形"},{"id":17,"railNo":"DF07 0101","isNormal":null,"checkDate":"2018-04-28 23:00:00","railStation":"hf","errorReason":"6个安装螺丝有无缺失、缺损、松动"},{"id":16,"railNo":"DF08 0080","isNormal":null,"checkDate":"2018-04-28 20:00:01","railStation":"hf","errorReason":"开口销有无缺失"},{"id":15,"railNo":"DF07 0077","isNormal":null,"checkDate":"2018-04-28 20:00:00","railStation":"hf","errorReason":"连接电缆是否绑扎牢固、线缆固定卡有无脱落、电缆外观有无变形、缺损"},{"id":16,"railNo":"DF08 0080","isNormal":null,"checkDate":"2018-04-28 20:00:01","railStation":"hf","errorReason":"开口销有无缺失"},{"id":15,"railNo":"DF07 0077","isNormal":null,"checkDate":"2018-04-28 20:00:00","railStation":"hf","errorReason":"连接电缆是否绑扎牢固、线缆固定卡有无脱落、电缆外观有无变形、缺损"}],
+      trainDetailInfos: [],// [{"trainInfoId":14,"partNo":"Ⅰ端","url":"http://106.12.21.105/page/tmp_train.jpg","analyResult":0,"checkDate":"2018-04-28 23:00:01"},{"trainInfoId":14,"partNo":"Ⅱ端","url":"http://106.12.21.105/page/tmp_zh.jpg","analyResult":0,"checkDate":"2018-04-28 23:00:01"},{"trainInfoId":14,"partNo":"1轴","url":"http://106.12.21.105/page/tmp_zh.jpg","analyResult":0,"checkDate":"2018-04-28 23:00:01"},{"trainInfoId":14,"partNo":"2轴","url":"http://106.12.21.105/page/tmp_zh.jpg","analyResult":0,"checkDate":"2018-04-28 23:00:01"},{"trainInfoId":14,"partNo":"3轴","url":"http://106.12.21.105/page/tmp_zh.jpg","analyResult":1,"checkDate":"2018-04-28 23:00:01","errorReason":"这里是故障原因"},{"trainInfoId":14,"partNo":"4轴","url":"http://106.12.21.105/page/tmp_zh.jpg","analyResult":0,"checkDate":"2018-04-28 23:00:01"},{"trainInfoId":14,"partNo":"5轴","url":"http://106.12.21.105/page/tmp_zh.jpg","analyResult":0,"checkDate":"2018-04-28 23:00:01"}]
     }
   },
   components:{
@@ -45,8 +45,8 @@ export default {
     }).then((data) => {
       console.log(data);
       if(data.status == 200){
-        // this.trainInfos=data.data.trainInfos || [];
-        // this.trainDetailInfos = data.data.trainDetailInfos || [];
+        this.trainInfos=data.data.trainInfos || [];
+        this.trainDetailInfos = data.data.trainDetailInfos || [];
       }
     })
   },

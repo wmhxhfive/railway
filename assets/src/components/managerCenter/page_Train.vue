@@ -14,7 +14,7 @@
 					    <option disabled value="">请选择</option>
 					    <option value="hf">合肥</option>
 					</select>
-		    		<label  for="label">是否故障</label>
+		    		<label for="label">是否故障</label>
 		    		<input type='checkbox' id="label" v-model="isNormal"/>
 		    		<label>&nbsp;</label><button @click="search()">查询</button>
 		    	</div>
@@ -62,7 +62,7 @@ export default {
     	railNo: '',
     	beginCheckDate: '',
     	endCheckDate: '',
-    	isNormal: false,//0无 1有
+    	isNormal: true,//0无 1有
     	railStation:'hf',
     	page: 0,//0开始
     	pageSize: 30,
@@ -113,29 +113,28 @@ export default {
 	      }
 	    }).then((data) => {
 	  	  var ret = data.data;
-	      console.log('showDetail-',ret);
-	      if(ret.message !== 'ok'){
-	        ret = {
-			  "ret": "0",
-			  "message": "ok",
-			  "trainInfos": [],
-			  "trainDetailInfos": [
-			    {
-			      "trainInfoId": 14,
-			      "partNo": "1",
-			      "url": "www.baidu",
-			      "analyResult": 1,
-			      "checkDate": "2018-04-28 23:00:01"
-			    },
-			    {
-			      "trainInfoId": 14,
-			      "partNo": "2",
-			      "url": "www.baidu",
-			      "analyResult": 1,
-			      "checkDate": "2018-04-28 23:00:01"
-			    }
-			  ]
-			}
+	      if(ret.message == 'ok'){
+	  //       ret = {
+			//   "ret": "0",
+			//   "message": "ok",
+			//   "trainInfos": [],
+			//   "trainDetailInfos": [
+			//     {
+			//       "trainInfoId": 14,
+			//       "partNo": "1",
+			//       "url": "www.baidu",
+			//       "analyResult": 1,
+			//       "checkDate": "2018-04-28 23:00:01"
+			//     },
+			//     {
+			//       "trainInfoId": 14,
+			//       "partNo": "2",
+			//       "url": "www.baidu",
+			//       "analyResult": 1,
+			//       "checkDate": "2018-04-28 23:00:01"
+			//     }
+			//   ]
+			// }
 
 	        this.trainDetailInfos = ret.trainDetailInfos;
 	        this.showDetailDialog = true;
@@ -166,7 +165,7 @@ export default {
 	  	  var ret = data.data;
 	  	  console.log('loadTrainList-', ret);
 	      if(ret.message == 'success'){
-	         ret = {"ret":"0","message":"success","trainInfoList":[{"id":34,"railNo":"hello1","isNormal":null,"checkDate":"2018-04-28 23:00:01","railStation":"hf","errorReason":"11"},{"id":17,"railNo":"ca123","isNormal":null,"checkDate":"2018-04-28 23:00:00","railStation":"hf","errorReason":"11"},{"id":16,"railNo":"hello","isNormal":null,"checkDate":"2018-04-28 20:00:01","railStation":"hf","errorReason":"11"},{"id":15,"railNo":"ca123","isNormal":null,"checkDate":"2018-04-28 20:00:00","railStation":"hf","errorReason":"11"},{"id":14,"railNo":"hello","isNormal":null,"checkDate":"2018-04-28 23:00:01","railStation":"hf","errorReason":"11"},{"id":5,"railNo":"hello","isNormal":"0","checkDate":"2018-04-21 23:00:01","railStation":"hf","errorReason":"11"},{"id":2,"railNo":"ca123","isNormal":"0","checkDate":"2018-04-21 23:00:00","railStation":"hf","errorReason":"11"},{"id":1,"railNo":"ca123","isNormal":"0","checkDate":"2018-04-17 23:00:00","railStation":"hf","errorReason":"11"}],"totalNum":8,"totalPage":1}
+	         //ret = {"ret":"0","message":"success","trainInfoList":[{"id":34,"railNo":"hello1","isNormal":null,"checkDate":"2018-04-28 23:00:01","railStation":"hf","errorReason":"11"},{"id":17,"railNo":"ca123","isNormal":null,"checkDate":"2018-04-28 23:00:00","railStation":"hf","errorReason":"11"},{"id":16,"railNo":"hello","isNormal":null,"checkDate":"2018-04-28 20:00:01","railStation":"hf","errorReason":"11"},{"id":15,"railNo":"ca123","isNormal":null,"checkDate":"2018-04-28 20:00:00","railStation":"hf","errorReason":"11"},{"id":14,"railNo":"hello","isNormal":null,"checkDate":"2018-04-28 23:00:01","railStation":"hf","errorReason":"11"},{"id":5,"railNo":"hello","isNormal":"0","checkDate":"2018-04-21 23:00:01","railStation":"hf","errorReason":"11"},{"id":2,"railNo":"ca123","isNormal":"0","checkDate":"2018-04-21 23:00:00","railStation":"hf","errorReason":"11"},{"id":1,"railNo":"ca123","isNormal":"0","checkDate":"2018-04-17 23:00:00","railStation":"hf","errorReason":"11"}],"totalNum":8,"totalPage":1}
 	        this.searchList = ret.trainInfoList;
 	      }else{
 	      	this.searchList = [];
