@@ -22,3 +22,4 @@ table.list-table a:active{color: #ff6122;}
 table.list-table td.ok {color: #176516;}
 table.list-table td.error {color: #ff0000;}
 table.list-table th {background-image: radial-gradient(#d6edfc, #8fcbf4);background-repeat:repeat-x;height:30px;}
+.alert-box {z-index: 999;position: fixed;top: 50%;left: 50%;background: rgba(0, 0, 0, 0.7);padding: 15px 30px;color: #ffffff;border-radius: 5px;}

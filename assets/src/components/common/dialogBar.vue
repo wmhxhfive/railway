@@ -3,7 +3,9 @@
         <div class="dialog" v-show="showMask">
             <div class="dialog-container">
                 <div class="dialog-title">{{title}}</div>
-                <div class="content" v-html="content"></div>
+                <div class="content">
+                    <slot></slot>
+                </div>
                 <div class="btns">
                     <div v-if="type != 'cancel'" class="default-btn" @click="closeBtn">
                         {{cancelText}}
@@ -50,6 +52,10 @@ export default {
             type: String,
             default: '确认'
         },
+        backcall:{
+            type: String,
+            default: ''
+        }
     },
     data(){
         return{
@@ -136,12 +142,10 @@ export default {
                 }
             }
             .btns{
-                width: 100%;
                 height: 60px;
-                // line-height: 60px;
                 position: absolute;
                 bottom: 0;
-                left: 0;
+                right: 0;
                 text-align: right;
                 padding: 0 16px;
                 box-sizing: border-box;

@@ -1,12 +1,17 @@
 <template>
   <div id="app">
     <router-view/>
+    <alert-view ref="alert">我是一个确认框</alert-view>
   </div>
 </template>
 
 <script>
+import Alert from '@/components/common/Alert.vue'
 export default {
-  name: 'App'
+  name: 'App',
+  components:{
+  	'alert-view': Alert,
+  }
 }
 </script>
 

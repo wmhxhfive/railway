@@ -1,19 +1,22 @@
 <template>
   <section>
-    <div class="detail-info" >
+    <div class="detail-info" v-if="trainInfo">
+      {{typeof trainInfo.id}}
         <span>机车ID：<span class="time">{{trainInfo.id}}</span></span>
         <span>机车型号：<span class="time">{{trainInfo.railNo}}</span></span>
         <!-- <span>是否异常： <b>{{trainInfo.isNormal?"是":"否"}}</b></span> -->
         <span>进站时间： <span class="time">{{new Date(trainInfo.checkDate).format('yyyy年mm月dd日 hh:ii:ss')}}</span></span>
     </div>
     <ul class="img-list">
-      <li v-for="item in trainDetailInfos" v-if="item.trainInfoId == trainInfo.id" :class="{'is-error':item.analyResult}" v-on:click="showImage(item.url, item.partNo)">
+      <li v-for="item in trainDetailInfos" v-if="item.trainInfoId == trainInfo.id" :class="{'is-error':item.analyResult}" @click="showImage(item)">
         <img :src="item.url"/>
         <div class="part-no">{{item.partNo}}</div>
         <span class="analysis-res" v-if="item.analyResult">
           <img src="../../assets/warn-tg.png"/>
         </span>
-        <div class="err-cont" v-if="item.analyResult">{{item.errorReason}}</div>
+        <div class="err-cont" v-if="item.analyResult">
+          <span>{{item.errorReason}}</span>
+        </div>
       </li>
     </ul>
     <div class="err-corner" v-show="showfoot">
@@ -21,31 +24,93 @@
       <img src="../../assets/logo.png"/>
       <span>机车设备智能检测</span>
     </div>
-    <mydialog-bar v-model="sendVal" type="cancel" :title="Title" :content="Content" @:cancel="clickCancel()"></mydialog-bar>
+    <mydialog-bar v-model="sendVal" type="defalut" :title="Title" :cancel="clickCancel">
+      <img :src="imgUrl" style="max-width: 100%;height: 100%;"/>
+      <!-- 故障编辑 -->
+      <div class="edit-box" v-if="editable">
+        故障：
+        <template v-if="isEditing">
+          <input class="edit-input" type="text" v-model="errorReason" />
+          <a @click="update">保存</a>
+          <a @click="cancelEdit">取消</a>
+        </template>
+        <template v-else>
+          <span class="edit-text">{{errorReason||'无'}}</span>
+          <a v-show="editable" @click="edit">编辑</a><br>
+        </template>
+      </div>
+    </mydialog-bar>
   </section>    
 </template>
 
 <script>
 import dialogBar from '@/components/common/dialogBar'
+import config from '@/config'
 
 export default {
   name: 'monitor',
-  props:['trainInfo', 'trainDetailInfos', 'showfoot'],
+  props:['trainInfo', 'trainDetailInfos', 'showfoot','editable'],
   data(){
     return {
       Title: '',
-      Content: '',
       sendVal: false,//控制显示
+      imgUrl:'',//dialog image url
+      eidtId: null,
+      isEditing: false,
+      errorReason:'',//错误信息
+      originError: '',
+      editingItem: null,
     }
   },
   components:{
     'mydialog-bar': dialogBar,
   },
   methods:{
-    showImage(url, title){
-      this.Content = '<img src="'+url+'" style="height:100%;"/>';
-      this.Title = title;
+    showImage(item){
+      console.log(item);
+      this.editingItem = item;
+      this.imgUrl = item.url;
+      this.Title = item.partNo;
+      this.eidtId = item.id;
+      this.errorReason = item.errorReason;
       this.sendVal = true;
+    },
+    clickCancel(){
+    },
+    edit(){
+      this.isEditing=!this.isEditing;
+      this.originError = this.errorReason;
+    },
+    cancelEdit(){
+      this.isEditing=!this.isEditing;
+      this.errorReason = this.originError;
+    },
+    update(){
+      var self = this;
+      self.isEditing=!self.isEditing;
+      self.$ajax({
+        method: 'post',
+        url: config.urlList.update,
+        headers:{"Content-Type": "application/json; charset=utf-8"},
+        transformRequest: [function (data) {
+          return JSON.stringify(data);
+        }],
+        data: {
+            errorReason: self.errorReason,
+            id: self.eidtId
+          }
+      }).then((data) => {
+        var ret = data.data;
+        console.log(data);
+        if(ret.ret === '0'){
+          self.editingItem.errorReason = self.errorReason;
+          self.editingItem.analyResult = 1;
+          alert('保存成功');
+        }else{
+          self.errorReason = self.originError;
+          alert('保存失败');
+        }
+      })
     }
   }
 }
@@ -141,5 +206,30 @@ export default {
   font-family: "隶书";
   opacity: 0.2;
   color: #1e1b1b;
+}
+.edit-box{
+  width: 60%;
+  margin: 0 auto;
+  text-align: left;
+  line-height: 45px;
+}
+.edit-box a{
+  color: #58bfff;
+  padding: 0 10px;
+  cursor: pointer;
+}
+.edit-box a:hover{
+  text-decoration:underline;
+}
+.edit-text{
+  display: inline-block;
+  font-size: 18px;
+  width: 350px;
+  text-align: left;
+}
+.edit-box input.edit-input{
+  width: 350px;
+  font-size: 18px;
+  border: 0.5px solid #ddd;
 }
 </style>

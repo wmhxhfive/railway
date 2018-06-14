@@ -8,7 +8,7 @@
       </div>
     </div>
     <div class="detail-box">
-      <train-detail :trainInfo="trainInfos[trainIndex]" showfoot="true" :trainDetailInfos="trainDetailInfos"></train-detail>
+      <train-detail :trainInfo="trainInfos[trainIndex]" showfoot="true" :trainDetailInfos="trainDetailInfos" :editable="false"></train-detail>
     </div>
   </div>    
 </template>

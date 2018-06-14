@@ -43,7 +43,7 @@
 		</div>
 		<transition name="slide-fade">
 		<div class="detail-dialog" v-show="showDetailDialog">
-			<train-detail :trainInfo="trainInfo" :trainDetailInfos="trainDetailInfos"></train-detail>
+			<train-detail :trainInfo="trainInfo" :trainDetailInfos="trainDetailInfos" :editable="true"></train-detail>
 			<div class="close" @click="close"></div>
 		</div>
 		</transition>
