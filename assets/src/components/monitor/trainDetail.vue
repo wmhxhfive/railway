@@ -14,7 +14,7 @@
         <span class="analysis-res" v-if="item.analyResult">
           <img src="../../assets/warn-tg.png"/>
         </span>
-        <div class="err-cont" v-if="item.analyResult">
+        <div class="err-cont" v-if="item.analyResult" :title="item.errorReason">
           <span>{{item.errorReason}}</span>
         </div>
       </li>
@@ -25,7 +25,7 @@
       <span>机车设备智能检测</span>
     </div>
     <mydialog-bar v-model="sendVal" type="defalut" :title="Title" :cancel="clickCancel">
-      <img :src="imgUrl" style="max-width: 100%;height: 100%;"/>
+      <img :src="imgUrl" style="max-width: 100%;height: 100%;display: inline-block;"/>
       <!-- 故障编辑 -->
       <div class="edit-box" v-if="editable">
         故障：
@@ -35,7 +35,7 @@
           <a @click="cancelEdit">取消</a>
         </template>
         <template v-else>
-          <span class="edit-text">{{errorReason||'无'}}</span>
+          <span class="edit-text" :title="errorReason">{{errorReason||'无'}}</span>
           <a v-show="editable" @click="edit">编辑</a><br>
         </template>
       </div>
@@ -182,6 +182,9 @@ export default {
   width: 100%;
   background-color: rgb(255,255,255, 0.8);
   color: #ef7f12;
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
 }
 .err-corner{
   position: absolute;
@@ -226,6 +229,10 @@ export default {
   font-size: 18px;
   width: 350px;
   text-align: left;
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
+  vertical-align: middle;
 }
 .edit-box input.edit-input{
   width: 350px;
