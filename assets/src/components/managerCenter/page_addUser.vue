@@ -80,12 +80,13 @@ export default {
          }
       }).then((data) => {
         console.log(data);
-        alert(data.data.message);
-        if(data.data.ret === '0'){
-          window.location.reload();
-        }else{
-          window.location.reload();
-        }
+        alert(data.data.message, function(){
+          if(data.data.ret === '0'){
+            window.location.reload();
+          }else{
+            window.location.reload();
+          }
+        });
       })
     }
   }

@@ -50,7 +50,7 @@ Vue.prototype.clearCookie= function(name) {
     this.setCookie(name, "", -1);  
 }
 
-alert = function(str){;
+alert = function(str, fn){;
   var dj=document.getElementById('__alert');
   if(dj){
     dj.remove();
@@ -62,5 +62,6 @@ alert = function(str){;
   document.body.appendChild(oDiv);
   setTimeout(function(){
     oDiv.remove();
+    fn && fn();
   }, 1500);
 }

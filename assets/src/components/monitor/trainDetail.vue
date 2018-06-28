@@ -25,7 +25,8 @@
       <span>机车设备智能检测</span>
     </div>
     <mydialog-bar v-model="sendVal" type="defalut" :title="Title" :cancel="clickCancel">
-      <img :src="imgUrl" style="max-width: 100%;height: 100%;display: inline-block;"/>
+      <img id="test" ref="bigImg" class="train-big-img" :src="imgUrl" :style="{width: option[rotateIndex]['width'], height: option[rotateIndex]['height'],'margin-top': option[rotateIndex]['margin-top'], transform:imgRotate}"/>
+      <a class="rorate-btn" @click="rotateImg" title="旋转"></a>
       <!-- 故障编辑 -->
       <div class="edit-box" v-if="editable">
         故障：
@@ -60,10 +61,24 @@ export default {
       errorReason:'',//错误信息
       originError: '',
       editingItem: null,
+      option:[{
+        width: 'auto',
+        height: '100%',
+        'margin-top': 0
+      }],
+      rotate: 0
     }
   },
   components:{
     'mydialog-bar': dialogBar,
+  },
+  computed:{
+    imgRotate(){
+      return 'rotate('+(this.rotate%4 * 90) +'deg)';
+    },
+    rotateIndex(){
+      return this.rotate % 2;
+    }
   },
   methods:{
     showImage(item){
@@ -74,8 +89,22 @@ export default {
       this.eidtId = item.id;
       this.errorReason = item.errorReason;
       this.sendVal = true;
+      this.rotate = 0;
+
+      var sf = this;
+      setTimeout(function(){
+        var img = sf.$refs.bigImg;
+        sf.option.push({
+          width: img.height + 'px',
+          height: 'auto',
+          'margin-top': '50px'
+        })
+    }, 1000)
     },
     clickCancel(){
+    },
+    rotateImg(){
+       this.rotate = (this.rotate+1)%4;
     },
     edit(){
       this.isEditing=!this.isEditing;
@@ -209,6 +238,22 @@ export default {
   font-family: "隶书";
   opacity: 0.2;
   color: #1e1b1b;
+}
+.train-big-img{max-width: 100%;height: 100%;display: inline-block;}
+.rorate-btn {
+  display: inline-block;
+  position: absolute;
+  top: 20px;
+  right: 60px;
+  background: url(/static/img/rorate-btn-img.f27922e.png) no-repeat;
+  background-size: 25px;
+  height: 25px;
+  width: 25px;
+  cursor: pointer;
+  opacity: 0.8;
+}
+.rorate-btn:hover{
+  opacity: 1;
 }
 .edit-box{
   width: 60%;
