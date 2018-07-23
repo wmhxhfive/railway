@@ -37,9 +37,9 @@ export default {
     }
   },
   beforeCreate(){
-    if(!this.getCookie('token')){
-      window.location.href="#/login";
-    }
+    // if(!this.getCookie('token')){
+    //   window.location.href="#/login";
+    // }
   },
   methods:{
     checkUser(){

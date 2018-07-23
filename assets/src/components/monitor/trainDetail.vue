@@ -1,16 +1,14 @@
 <template>
   <section>
     <div class="detail-info" v-if="trainInfo">
-      {{typeof trainInfo.id}}
-        <span>机车ID：<span class="time">{{trainInfo.id}}</span></span>
-        <span>机车型号：<span class="time">{{trainInfo.railNo}}</span></span>
+        <span>车型车号：<span class="time">{{trainInfo.railNo}}</span></span>
         <!-- <span>是否异常： <b>{{trainInfo.isNormal?"是":"否"}}</b></span> -->
-        <span>进站时间： <span class="time">{{new Date(trainInfo.checkDate).format('yyyy年mm月dd日 hh:ii:ss')}}</span></span>
+        <span>入库时间： <span class="time">{{new Date(trainInfo.checkDate).format('yyyy年mm月dd日 hh:ii:ss')}}</span></span>
     </div>
-    <ul class="img-list">
-      <li v-for="item in trainDetailInfos" v-if="item.trainInfoId == trainInfo.id" :class="{'is-error':item.analyResult}" @click="showImage(item)">
+    <ul class="img-list" :class="{more: trainDetailInfo.length>9}">
+      <li v-for="item in trainDetailInfo" :class="{'is-error':item.analyResult}" @click="showImage(item)">
         <img :src="item.url"/>
-        <div class="part-no">{{item.partNo}}</div>
+        <div class="part-no">{{getTitle(item.partNo)}}</div>
         <span class="analysis-res" v-if="item.analyResult">
           <img src="../../assets/warn-tg.png"/>
         </span>
@@ -25,12 +23,12 @@
       <span>机车设备智能检测</span>
     </div>
     <mydialog-bar v-model="sendVal" type="defalut" :title="Title" :cancel="clickCancel">
-      <img id="test" ref="bigImg" class="train-big-img" :src="imgUrl" :style="{width: option[rotateIndex]['width'], height: option[rotateIndex]['height'],'margin-top': option[rotateIndex]['margin-top'], transform:imgRotate}"/>
-      <a class="rorate-btn" @click="rotateImg" title="旋转"></a>
+      <img id="bigImg" class="train-big-img" :src="imgUrl" />
+      <!-- <a class="rorate-btn" @click="rotateImg" title="旋转"></a> -->
       <!-- 故障编辑 -->
-      <div class="edit-box" v-if="editable">
-        故障：
-        <template v-if="isEditing">
+      <div class="edit-box">
+        预警信息：
+        <template v-if="isEditing && editable">
           <input class="edit-input" type="text" v-model="errorReason" />
           <a @click="update">保存</a>
           <a @click="cancelEdit">取消</a>
@@ -50,7 +48,7 @@ import config from '@/config'
 
 export default {
   name: 'monitor',
-  props:['trainInfo', 'trainDetailInfos', 'showfoot','editable'],
+  props:['trainInfo', 'trainDetailInfo', 'showfoot','editable'],
   data(){
     return {
       Title: '',
@@ -59,52 +57,44 @@ export default {
       eidtId: null,
       isEditing: false,
       errorReason:'',//错误信息
-      originError: '',
+      originError: '',// 保存原错误信息
       editingItem: null,
-      option:[{
-        width: 'auto',
-        height: '100%',
-        'margin-top': 0
-      }],
-      rotate: 0
+      rotate: 0,
+      railNoList:{
+        '1': 'Ⅰ左信号感应器',
+        '2': 'Ⅰ右信号感应器',
+        '3': 'Ⅱ左信号感应器',
+        '4': 'Ⅱ右信号感应器',
+        '5': '左侧速度传感器',
+        '6': '右侧速度传感器',
+        '7': '机车标签'
+      }
     }
   },
   components:{
     'mydialog-bar': dialogBar,
   },
-  computed:{
-    imgRotate(){
-      return 'rotate('+(this.rotate%4 * 90) +'deg)';
-    },
-    rotateIndex(){
-      return this.rotate % 2;
-    }
-  },
   methods:{
     showImage(item){
-      console.log(item);
       this.editingItem = item;
       this.imgUrl = item.url;
-      this.Title = item.partNo;
+      this.Title = this.getTitle(item.partNo);
       this.eidtId = item.id;
       this.errorReason = item.errorReason;
       this.sendVal = true;
       this.rotate = 0;
+      this.isEditing = false;
 
-      var sf = this;
-      setTimeout(function(){
-        var img = sf.$refs.bigImg;
-        sf.option.push({
-          width: img.height + 'px',
-          height: 'auto',
-          'margin-top': '50px'
-        })
-    }, 1000)
+      console.log(item);
+      // this.$nextTick(function(){
+      //   $('#bigImg').attr('height', $('#bigImg').height()).attr('width', $('#bigImg').width())
+      // })
     },
     clickCancel(){
     },
     rotateImg(){
-       this.rotate = (this.rotate+1)%4;
+       // this.rotate += 90;
+       // $('#bigImg').rotate({ animateTo:this.rotate})
     },
     edit(){
       this.isEditing=!this.isEditing;
@@ -116,6 +106,11 @@ export default {
     },
     update(){
       var self = this;
+      console.log("self.errorReason", self.errorReason);
+      if(!self.errorReason || !self.errorReason.trim()){
+        alert("预警内容不能为空");
+        return;
+      }
       self.isEditing=!self.isEditing;
       self.$ajax({
         method: 'post',
@@ -125,9 +120,9 @@ export default {
           return JSON.stringify(data);
         }],
         data: {
-            errorReason: self.errorReason,
-            id: self.eidtId
-          }
+          errorReason: self.errorReason,
+          id: self.eidtId
+        }
       }).then((data) => {
         var ret = data.data;
         console.log(data);
@@ -140,6 +135,15 @@ export default {
           alert('保存失败');
         }
       })
+    },
+    getTitle(no){
+      var res = "";
+      if(no.indexOf('-')>-1){
+        res = this.railNoList[no.substr(0, no.indexOf('-'))] + no.substr(no.indexOf('-') + 1);
+      }else{
+        var res = this.railNoList[no];
+      }
+      return res;
     }
   }
 }
@@ -181,9 +185,16 @@ export default {
   text-align: center;
   background: #ededed url('../../assets/default_img.png') no-repeat center/auto 60%;
 }
+.img-list.more li{
+  width: 24.8%;
+}
 .img-list img{
   max-height: 100%;
   max-width: 100%;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }
 .img-list .analysis-res{
   height: 30px;
@@ -194,13 +205,12 @@ export default {
   z-index: 2;
 }
 .img-list .part-no {
-    position: absolute;
-    top: 0;
-    left: 0;
-    background-color: #565656;
-    color: #fff;
-    padding: 5px 0;
-    width: 45px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: #565656;
+  color: #fff;
+  padding: 5px 10px;
 }
 .img-list .err-cont{
   height: 1.5em;
@@ -221,7 +231,6 @@ export default {
   bottom: 3vh;
   text-align: right;
   font-size: 2em;
-  background-color: #d7d6d6;
   color: #278acb;
 }
 .err-corner div{
@@ -245,7 +254,7 @@ export default {
   position: absolute;
   top: 20px;
   right: 60px;
-  background: url(/static/img/rorate-btn-img.f27922e.png) no-repeat;
+  background: url('../../assets/rorate-btn-img.png') no-repeat;
   background-size: 25px;
   height: 25px;
   width: 25px;

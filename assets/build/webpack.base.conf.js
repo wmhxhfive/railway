@@ -8,6 +8,10 @@ function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
 
+// 在开头引入webpack，后面的plugins那里需要
+// var webpack = require('webpack')
+// resolve
+
 module.exports = {
   context: path.resolve(__dirname, '../'),
   entry: {
@@ -25,6 +29,7 @@ module.exports = {
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
       '@': resolve('src'),
+      // 'jquery': 'jquery'
     }
   },
   module: {
@@ -80,5 +85,13 @@ module.exports = {
     net: 'empty',
     tls: 'empty',
     child_process: 'empty'
-  }
+  },
+   // // 增加一个plugins
+   // plugins: [
+   //    new webpack.ProvidePlugin({
+   //        $: "jquery",
+   //        jQuery: "jquery"
+   //    })
+   // ]
+
 }

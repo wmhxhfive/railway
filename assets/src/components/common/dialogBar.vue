@@ -100,7 +100,7 @@ export default {
         left: 0;
         right: 0;
         background: rgba(0, 0, 0, 0.6);
-        z-index: 9999;
+        z-index: 9900;
         .dialog-container{
             width: 80%;
             height: 95%;

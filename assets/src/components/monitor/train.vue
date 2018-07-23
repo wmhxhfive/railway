@@ -8,7 +8,7 @@
         </div>
         <div class="time-info" style="font-size: 20px;font-weight: bolder;">
           {{new Date(item.checkDate).format('hh:ii:ss')}}
-          <span class="err-status-ok" :class="{'err-status-warn': item.isNormal}"></span>
+          <span class="err-status-ok" :class="{'err-status-warn': item.isNormal == '1'}"></span>
         </div>
       </div>
     </div>

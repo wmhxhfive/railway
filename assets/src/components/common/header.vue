@@ -1,9 +1,9 @@
 <template>
 	<div class="header">
+    <a class="menu-click" @click="toggleHeaderMenu">菜单</a>
     <img src="../../assets/header-img.png" class="header-kj"></img>
-    <div class="header-user" @click="toggleHeaderMenu">
+    <div class="header-user" @click="toggleHeaderUser">
       {{username}}<span class="down-arrow" :class="open?'up':''"></span>
-
       <transition name="fade">
         <div class="header-menu" v-show="open">
           <!-- <span @click.stop="">
@@ -16,7 +16,7 @@
       </transition>
     </div>
 		<div class="header-center">
-      <img src="../../assets/logo.png" />机车设备智能监测
+      <img src="../../assets/logo.png" />TDRS车载外部设备图像监测系统
     </div>
 	</div>
 </template>
@@ -36,6 +36,9 @@ export default {
   },
   methods:{
     toggleHeaderMenu(){
+      this.$emit('toggleMenuOpen', {})
+    },
+    toggleHeaderUser(){
       this.open = !this.open;
     },
     exit(){
@@ -56,6 +59,11 @@ export default {
   color: #fff;
 	background: url('../../assets/header-bg.png') repeat;
 }
+.menu-click{
+  position: absolute;
+  left: 20px;
+  cursor: pointer;
+}
 .header-kj{
   height: 82px;
   float: left;
@@ -64,11 +72,11 @@ export default {
 .header-center{
   text-align: center;
   font-weight: bold;
-  font-size: 40px;
-  font-family: "LiSu";
+  font-size: 35px;
+  font-family: Cambria,"LiSu";
   margin: 0 auto;
   height: 65px;
-  width: 500px;
+  width: 600px;
   background: url('../../assets/header-center-bg.png') repeat;
   position: relative;
 }

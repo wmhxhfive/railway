@@ -3,18 +3,18 @@
 	    <div class="cont-header">
 	    	<div class="cont-box">
 	    		<div class="condition">
-		    		<label>机车编号</label>
-		    		<input type='text' v-model.trim="railNo" placeholder="机车编号" />
-		    		<label>选择时间段</label>
-		    		<input type='text' id='time' placeholder="选择时间段" />
+		    		<label>车型车号</label>
+		    		<input type='text' v-model.trim="railNo" placeholder="车型车号" />
+		    		<label>入库时间</label>
+		    		<input type='text' id='time' placeholder="入库时间" />
 		    	</div>
 	    		<div class="condition">
 		    		<label>选择站点</label>
 		    		<select v-model="railStation">
 					    <option disabled value="">请选择</option>
-					    <option value="hf">合肥</option>
+					    <option value="合肥" selected="true">合肥</option>
 					</select>
-		    		<label for="label">是否故障</label>
+		    		<label for="label">预警信息</label>
 		    		<input type='checkbox' id="label" v-model="isNormal"/>
 		    		<label>&nbsp;</label><button @click="search()">查询</button>
 		    	</div>
@@ -25,25 +25,32 @@
 	    	<table class="list-table">
 	    		<tr>
 	    			<th>序号</th>
-	    			<th>机车编号</th>
-	    			<th>是否异常</th>
+	    			<th>车型车号</th>
+	    			<th>入库时间</th>
+	    			<th>预警信息</th>
 	    			<!-- <th>异常原因</th> -->
-	    			<th>检测时间</th>
-	    			<th>操作</th>
+	    			<th>检测图片</th>
 	    		</tr>
-	    		<tr v-for="item,index in searchList">
-	    			<td>{{++index}}</td>
-	    			<td>{{item.railNo}}</td>
-	    			<td :class="{error:item.isNormal}">{{item.isNormal?'有':'-'}}</td>
-	    			<!-- <td>{{item.errorReason||'-'}}</td> -->
-	    			<td>{{item.checkDate}}</td>
-	    			<td><a href="javascript:;" @click="showDetail(item)">查看详情</a></td>
-	    		</tr>
+	    		<template v-if="searchList.length>0">
+		    		<tr v-for="item,index in searchList">
+		    			<td>{{++index}}</td>
+		    			<td>{{item.railNo}}</td>
+		    			<td>{{item.checkDate}}</td>
+		    			<td :class="{error:item.isNormal=='1'}">{{item.isNormal=='1'?'有':'-'}}</td>
+		    			<!-- <td>{{item.errorReason||'-'}}</td> -->
+		    			<td><a href="javascript:;" @click="showDetail(item)">查看详情</a></td>
+		    		</tr>
+	    		</template>
+	    		<template v-else>
+		    		<tr>
+		    			<td colspan="5">[空]</td>
+		    		</tr>
+	    		</template>
 	    	</table>
 		</div>
 		<transition name="slide-fade">
 		<div class="detail-dialog" v-show="showDetailDialog">
-			<train-detail :trainInfo="trainInfo" :trainDetailInfos="trainDetailInfos" :editable="true"></train-detail>
+			<train-detail :trainInfo="trainInfo" :trainDetailInfo="trainDetailInfo" :editable="true"></train-detail>
 			<div class="close" @click="close"></div>
 		</div>
 		</transition>
@@ -63,12 +70,12 @@ export default {
     	beginCheckDate: '',
     	endCheckDate: '',
     	isNormal: true,//0无 1有
-    	railStation:'hf',
+    	railStation:'合肥',
     	page: 0,//0开始
     	pageSize: 30,
     	searchList: [],
     	trainInfo: [],
-    	trainDetailInfos:[],
+    	trainDetailInfo:[],
     	showDetailDialog:false
     }
   },
@@ -76,9 +83,9 @@ export default {
     'train-detail': trainInfoView
   },
   beforeCreate(){
-    if(!this.getCookie('token')){
-      window.location.href="#/login";
-    }
+    // if(!this.getCookie('token')){
+    //   window.location.href="#/login";
+    // }
   },
   mounted(){
   	var self = this;
@@ -113,7 +120,6 @@ export default {
 	      }
 	    }).then((data) => {
 	  	  var ret = data.data;
-	      if(ret.message == 'ok'){
 	  //       ret = {
 			//   "ret": "0",
 			//   "message": "ok",
@@ -135,11 +141,11 @@ export default {
 			//     }
 			//   ]
 			// }
-
-	        this.trainDetailInfos = ret.trainDetailInfos;
+	      if(ret.ret === '0'){
+	        this.trainDetailInfo = ret.trainDetailInfos;
 	        this.showDetailDialog = true;
 	      }else{
-	      	this.trainDetailInfos = [];
+	      	this.trainDetailInfo = [];
 	        this.showDetailDialog = false;
 	      }
 	    })
@@ -165,7 +171,7 @@ export default {
 	  	  var ret = data.data;
 	  	  console.log('loadTrainList-', ret);
 	      if(ret.message == 'success'){
-	         //ret = {"ret":"0","message":"success","trainInfoList":[{"id":34,"railNo":"hello1","isNormal":null,"checkDate":"2018-04-28 23:00:01","railStation":"hf","errorReason":"11"},{"id":17,"railNo":"ca123","isNormal":null,"checkDate":"2018-04-28 23:00:00","railStation":"hf","errorReason":"11"},{"id":16,"railNo":"hello","isNormal":null,"checkDate":"2018-04-28 20:00:01","railStation":"hf","errorReason":"11"},{"id":15,"railNo":"ca123","isNormal":null,"checkDate":"2018-04-28 20:00:00","railStation":"hf","errorReason":"11"},{"id":14,"railNo":"hello","isNormal":null,"checkDate":"2018-04-28 23:00:01","railStation":"hf","errorReason":"11"},{"id":5,"railNo":"hello","isNormal":"0","checkDate":"2018-04-21 23:00:01","railStation":"hf","errorReason":"11"},{"id":2,"railNo":"ca123","isNormal":"0","checkDate":"2018-04-21 23:00:00","railStation":"hf","errorReason":"11"},{"id":1,"railNo":"ca123","isNormal":"0","checkDate":"2018-04-17 23:00:00","railStation":"hf","errorReason":"11"}],"totalNum":8,"totalPage":1}
+	         // ret = {"ret":"0","message":"success","trainInfoList":[{"id":34,"railNo":"hello1","isNormal":null,"checkDate":"2018-04-28 23:00:01","railStation":"hf","errorReason":"11"},{"id":17,"railNo":"ca123","isNormal":null,"checkDate":"2018-04-28 23:00:00","railStation":"hf","errorReason":"11"},{"id":16,"railNo":"hello","isNormal":null,"checkDate":"2018-04-28 20:00:01","railStation":"hf","errorReason":"11"},{"id":15,"railNo":"ca123","isNormal":null,"checkDate":"2018-04-28 20:00:00","railStation":"hf","errorReason":"11"},{"id":14,"railNo":"hello","isNormal":null,"checkDate":"2018-04-28 23:00:01","railStation":"hf","errorReason":"11"},{"id":5,"railNo":"hello","isNormal":"0","checkDate":"2018-04-21 23:00:01","railStation":"hf","errorReason":"11"},{"id":2,"railNo":"ca123","isNormal":"0","checkDate":"2018-04-21 23:00:00","railStation":"hf","errorReason":"11"},{"id":1,"railNo":"ca123","isNormal":"0","checkDate":"2018-04-17 23:00:00","railStation":"hf","errorReason":"11"}],"totalNum":8,"totalPage":1}
 	        this.searchList = ret.trainInfoList;
 	      }else{
 	      	this.searchList = [];

@@ -11,9 +11,9 @@ import VeeValidate from 'vee-validate';
 Vue.use(VeeValidate);
 Vue.use(Router);
 
-document.addEventListener( "click",function(e){
-  console.log('点击：', e.target);
-},false );
+// document.addEventListener( "click",function(e){
+//   console.log('点击：', e.target);
+// },false );
 
 Vue.config.productionTip = false
 Vue.prototype.$ajax = axios

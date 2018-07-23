@@ -12,11 +12,11 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
         // proxy all requests starting with /api to jsonplaceholder
-      '/train': {
+      '/train/': {
             target: 'http://106.12.21.105',
             changeOrigin: true,
             pathRewrite: {  //需要rewrite重写的, 如果在服务器端做了处理则可以不要这段
-              '^/train': 'train'
+              '^/train/': 'train/'
             }
         }
     },

@@ -26,6 +26,10 @@ Date.prototype.format = function(fmt) {
     return fmt; 
 }
 
+String.prototype.trim = function () {
+    return this.replace(/^\s+|\s+$/gm,'');
+}
+
 Vue.prototype.setCookie = function(cname, cvalue, exdays) {
   if(exdays){
       var d = new Date();
