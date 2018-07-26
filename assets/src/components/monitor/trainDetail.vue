@@ -45,11 +45,13 @@
 
 <script>
 import dialogBar from '@/components/common/dialogBar'
-import config from '@/net/config'
+import webUrls from '@/net/webUrls'
+import localStore from '@/mixin/localStore'
 
 export default {
   name: 'monitor',
   props:['trainInfo', 'trainDetailInfo', 'showfoot','editable'],
+  mixins: [localStore],
   data(){
     return {
       Title: '',
@@ -115,7 +117,7 @@ export default {
       self.isEditing=!self.isEditing;
       self.$ajax({
         method: 'post',
-        url: config.urlList.update,
+        url: webUrls.urlList.update,
         headers:{"Content-Type": "application/json; charset=utf-8"},
         transformRequest: [function (data) {
           return JSON.stringify(data);

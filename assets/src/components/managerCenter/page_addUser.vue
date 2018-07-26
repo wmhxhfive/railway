@@ -20,11 +20,13 @@
 </template>
 
 <script>
-import config from '@/net/config'
+import webUrls from '@/net/webUrls'
+import checkLoginStatus from '@/mixin/checkLoginStatus'
 import md5 from 'js-md5';
 
 export default {
   name: 'page_add_user',
+  // mixins: [checkLoginStatus],
   data () {
     return {
     	username:'',
@@ -36,16 +38,11 @@ export default {
       showBtn: true,
     }
   },
-  beforeCreate(){
-    // if(!this.getCookie('token')){
-    //   window.location.href="#/login";
-    // }
-  },
   methods:{
     checkUser(){
       this.$ajax({
         method: 'get',
-        url: config.urlList.checkUser,
+        url: webUrls.urlList.checkUser,
         params: { 
           username: this.username,
         }
@@ -68,7 +65,7 @@ export default {
       this.showBtn = false;
       this.$ajax({
         method: 'post',
-        url: config.urlList.register,
+        url: webUrls.urlList.register,
         headers:{"Content-Type": "application/json; charset=utf-8"},
         transformRequest: [function (data) {
           return JSON.stringify(data);

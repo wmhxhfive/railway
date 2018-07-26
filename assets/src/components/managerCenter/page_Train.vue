@@ -58,12 +58,14 @@
 </template>
 
 <script>
-import config from '@/net/config'
+import webUrls from '@/net/webUrls'
 import trainInfoView from '@/components/monitor/trainDetail'
+import checkLoginStatus from '@/mixin/checkLoginStatus'
 var QS=require('qs');
 
 export default {
   name: 'page_Train',
+  // mixins: [checkLoginStatus],
   data () {
     return {
     	railNo: '',
@@ -81,11 +83,6 @@ export default {
   },
   components:{
     'train-detail': trainInfoView
-  },
-  beforeCreate(){
-    // if(!this.getCookie('token')){
-    //   window.location.href="#/login";
-    // }
   },
   mounted(){
   	var self = this;
@@ -111,7 +108,7 @@ export default {
   		this.trainInfo = info;
 		this.$ajax({
 	      method: 'post',
-	      url: config.urlList.trainDetail,
+	      url: webUrls.urlList.trainDetail,
 	      transformRequest: [function (data) {
 	        return QS.stringify(data);
 	      }],
@@ -153,7 +150,7 @@ export default {
   	loadTrainList(){
 	  	this.$ajax({
 	      method: 'post',
-	      url: config.urlList.trainList,
+	      url: webUrls.urlList.trainList,
 	      headers:{"Content-Type": "application/json; charset=utf-8"},
 	      transformRequest: [function (data) {
 	        return JSON.stringify(data);

@@ -44,11 +44,14 @@
 </template>
 
 <script>
-import config from '@/net/config'
+import webUrls from '@/net/webUrls'
+import checkLoginStatus from '@/mixin/checkLoginStatus'
+import localStore from '@/mixin/localStore'
 var QS=require('qs');
 
 export default {
   name: 'page_Train',
+  mixins: [localStore],
   data () {
     return {
     	railNo: '',
@@ -60,11 +63,6 @@ export default {
     	pageSize: 30,
     	searchList: []
     }
-  },
-  beforeCreate(){
-    // if(!this.getCookie('token')){
-    //   window.location.href="#/login";
-    // }
   },
   mounted(){
   	var self = this;
@@ -88,14 +86,12 @@ export default {
   		this.loadTrainList();
   	},
   	saveDetail(item){
-  		if(window.localStorage){
-  			window.localStorage.setItem('BLANKTRAININFO', JSON.stringify(item));
-  		}
+  		this.setLocalSave('BLANKTRAININFO', JSON.stringify(item));
   	},
   	loadTrainList(){
 	  	this.$ajax({
 	      method: 'post',
-	      url: config.urlList.trainList,
+	      url: webUrls.urlList.trainList,
 	      headers:{"Content-Type": "application/json; charset=utf-8"},
 	      transformRequest: [function (data) {
 	        return JSON.stringify(data);

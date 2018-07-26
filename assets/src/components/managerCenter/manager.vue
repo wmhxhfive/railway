@@ -14,9 +14,12 @@
 
 <script>
 import Header from '@/components/common/header'
+import checkLoginStatus from '@/mixin/checkLoginStatus'
+import localStore from '@/mixin/localStore'
 
 export default {
   name: 'manager',
+  mixins: [localStore],
   data () {
     return {
       username: '',
@@ -35,16 +38,11 @@ export default {
       }]
     }
   },
-  beforeCreate(){
-    // if(!this.getCookie('token')){
-    //   window.location.href="#/login";
-    // }
-  },
   components:{
     'header-view': Header
   },
   created() {
-    this.username = localStorage.getItem('username') || 'admin';
+    this.username = this.getLocalSave('username') || 'admin';
   },
   methods:{
     open_page(index, p_url){

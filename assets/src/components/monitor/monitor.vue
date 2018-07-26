@@ -2,10 +2,10 @@
   <div class="monitor">
     <div class="train-bar">
       <train-view :trainInfos="trainInfos" :trainDetailInfos="trainDetailInfos" v-on:changeTrain="changeTrain"></train-view>
-      <div class="more-train">
+      <a class="more-train" href="#/manager" target="_blank">
         <img src="../../assets/train-header.png"/>
         进站记录
-      </div>
+      </a>
     </div>
     <div class="detail-box">
       <train-detail :trainInfo="trainInfos[trainIndex]" showfoot="true" :trainDetailInfo="trainDetailInfo" :editable="false"></train-detail>
@@ -16,11 +16,13 @@
 <script>
 import train from '@/components/monitor/train'
 import trainInfo from '@/components/monitor/trainDetail'
-import config from '@/net/config'
+import webUrls from '@/net/webUrls'
+import localStore from '@/mixin/localStore'
 var QS = require('qs');
 
 export default {
   name: 'monitor',
+  mixins: [localStore],
   data () {
     return {
       trainIndex: 0,
@@ -42,7 +44,7 @@ export default {
       var self = this;
       this.$ajax({
         method: 'post',
-        url: config.urlList.trainInfo,
+        url: webUrls.urlList.trainInfo,
         transformRequest: [function (data) {
           return QS.stringify(data);
         }],
@@ -66,7 +68,6 @@ export default {
           this.trainDetailInfo.push(list[key])
         }
       }
-      console.log('===', this.trainDetailInfo);
     },
     changeTrain(index){
       this.trainIndex = index;
@@ -106,6 +107,7 @@ ul,li{
   bottom: 0;
   width: 100%;
   cursor: pointer;
+  text-decoration: none;
 }
 .more-train img{
   height: 25px;

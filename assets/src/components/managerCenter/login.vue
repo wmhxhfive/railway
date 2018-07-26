@@ -28,17 +28,20 @@
     </div>
   </div>
   <div style="text-align:center;margin:50px 0; font:normal 25px/36px '隶书';color:#000000">
-<h2><img src="../../assets/logo.png"/>TDRS车载外部设备图像监测系统</h2>
+<h2><img src="../../assets/logo.png"/><span class="tdrs">TDRS</span>车载外部设备图像监测系统</h2>
 </div>
 </div>
 </template>
 
 <script>
-import config from '@/net/config'
+import webUrls from '@/net/webUrls'
 import md5 from 'js-md5';
+import checkLoginStatus from '@/mixin/checkLoginStatus'
+import localStore from '@/mixin/localStore'
 
 export default {
   name: 'monitor',
+  mixins: [localStore],
   data () {
     return {
         username:'',
@@ -47,11 +50,6 @@ export default {
         needed: false,
         showBtn: true,
       } 
-  },
-  beforeCreate(){
-    if(this.getCookie('token')){
-      window.location.href="#/manager";
-    }
   },
   methods: {
     login(){
@@ -64,7 +62,7 @@ export default {
       console.log(md5(this.password));
       this.$ajax({
         method: 'post',
-        url: config.urlList.login,
+        url: webUrls.urlList.login,
         headers:{"Content-Type": "application/json; charset=utf-8"},
         transformRequest: [function (data) {
           return JSON.stringify(data);
@@ -77,8 +75,8 @@ export default {
       }).then((data) => {
         console.log(data);
         if(data.data.ret === '0'){
-          localStorage.setItem('username', this.username);
-          this.setCookie('token', md5(this.username+config.INAPP));
+          this.setLocalSave('username', this.username);
+          this.setCookie('token', md5(this.username+webUrls.INAPP));
           window.location.href="#/manager";
         }else{
           alert(data.data.message);
@@ -98,6 +96,10 @@ h1,h2,h3{
 h1 img,h2 img,h3 img{
   height: 36px;
   margin-right: 20px;
+  vertical-align: middle;
+}
+h2 .tdrs{
+  font-size: 32px;
 }
 .wrapper {
   background: #3094d2;

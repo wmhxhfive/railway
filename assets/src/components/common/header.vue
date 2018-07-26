@@ -3,7 +3,7 @@
     <a class="menu-click" @click="toggleHeaderMenu">菜单</a>
     <img src="../../assets/header-img.png" class="header-kj"></img>
     <div class="header-user" @click="toggleHeaderUser">
-      {{username}}<span class="down-arrow" :class="open?'up':''"></span>
+      <!-- {{username}}<span class="down-arrow" :class="open?'up':''"></span> -->
       <transition name="fade">
         <div class="header-menu" v-show="open">
           <!-- <span @click.stop="">
@@ -16,7 +16,7 @@
       </transition>
     </div>
 		<div class="header-center">
-      <img src="../../assets/logo.png" />TDRS车载外部设备图像监测系统
+      <img src="../../assets/logo.png" /><span class="tdrs">TDRS</span>车载外部设备图像监测系统
     </div>
 	</div>
 </template>
@@ -101,6 +101,9 @@ export default {
 .header-center img{
   height: 30px;
   margin-right: 10px;
+}
+.header-center .tdrs{
+  font-size: 30px;
 }
 .header-user{
   width: 200px;

@@ -4,17 +4,15 @@
 </template>
 
 <script>
+import checkLoginStatus from '@/mixin/checkLoginStatus'
+
 export default {
   name: 'page_user',
+  // mixins: [checkLoginStatus],
   data () {
     return {
     	
     }
-  },
-  beforeCreate(){
-    // if(!this.getCookie('token')){
-    //   window.location.href="#/login";
-    // }
   },
   methods:{
   }

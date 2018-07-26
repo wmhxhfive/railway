@@ -15,9 +15,12 @@
 </template>
 
 <script>
+import localStore from '@/mixin/localStore'
+
 export default {
   name: 'train',
   props:['trainInfos', 'trainDetailInfos'],
+  mixins: [localStore],
   data () {
     return {
       msg: '',

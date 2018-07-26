@@ -4,9 +4,9 @@ import Vue from 'vue'
 import App from './App'
 import Router from 'vue-router'
 import routerConfig from './router/router';
-import ddd from './tool';
 import axios from 'axios'
 import VeeValidate from 'vee-validate';
+import ptdom from '@/lib/protoDom';
 
 Vue.use(VeeValidate);
 Vue.use(Router);

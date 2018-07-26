@@ -1,16 +1,19 @@
 <template>
 	<div class="detail-dialog">
-		<train-detail :trainInfo="trainInfo" :trainDetailInfo="trainDetailInfo" :editable="true"></train-detail>
+		<train-detail :trainInfo="trainInfo" :trainDetailInfo="trainDetailInfo" :editable="false"></train-detail>
 	</div>
 </template>
 
 <script>
-import config from '@/net/config'
+import webUrls from '@/net/webUrls'
 import trainInfoView from '@/components/monitor/trainDetail'
+import checkLoginStatus from '@/mixin/checkLoginStatus'
+import localStore from '@/mixin/localStore'
 var QS=require('qs');
 
 export default {
   name: 'page_Train',
+  mixins: [localStore],
   data () {
     return {
     	trainInfo: {},
@@ -20,47 +23,40 @@ export default {
   components:{
     'train-detail': trainInfoView
   },
-  beforeCreate(){
-    // if(!this.getCookie('token')){
-    //   window.location.href="#/login";
-    // }
-  },
   mounted(){
-  	if(window.localStorage){
-		this.trainInfo = JSON.parse(window.localStorage.getItem('BLANKTRAININFO'));
-	}
-	this.$ajax({
-      method: 'post',
-      url: config.urlList.trainDetail,
-      transformRequest: [function (data) {
-        return QS.stringify(data);
-      }],
-      data: { 
-        id: this.trainInfo.id
-      }
-    }).then((data) => {
-  	  var ret = data.data;
-  //       ret = {
-		//   "ret": "0",
-		//   "message": "ok",
-		//   "trainInfos": [],
-		//   "trainDetailInfos": [
-		//     {
-		//       "trainInfoId": 14,
-		//       "partNo": "1",
-		//       "url": "www.baidu",
-		//       "analyResult": 1,
-		//       "checkDate": "2018-04-28 23:00:01"
-		//     },
-		//     {
-		//       "trainInfoId": 14,
-		//       "partNo": "2",
-		//       "url": "www.baidu",
-		//       "analyResult": 1,
-		//       "checkDate": "2018-04-28 23:00:01"
-		//     }
-		//   ]
-		// }
+		this.trainInfo = JSON.parse(this.getLocalSave('BLANKTRAININFO'));
+  	this.$ajax({
+        method: 'post',
+        url: webUrls.urlList.trainDetail,
+        transformRequest: [function (data) {
+          return QS.stringify(data);
+        }],
+        data: { 
+          id: this.trainInfo.id
+        }
+      }).then((data) => {
+    	  var ret = data.data;
+    //       ret = {
+  		//   "ret": "0",
+  		//   "message": "ok",
+  		//   "trainInfos": [],
+  		//   "trainDetailInfos": [
+  		//     {
+  		//       "trainInfoId": 14,
+  		//       "partNo": "1",
+  		//       "url": "www.baidu",
+  		//       "analyResult": 1,
+  		//       "checkDate": "2018-04-28 23:00:01"
+  		//     },
+  		//     {
+  		//       "trainInfoId": 14,
+  		//       "partNo": "2",
+  		//       "url": "www.baidu",
+  		//       "analyResult": 1,
+  		//       "checkDate": "2018-04-28 23:00:01"
+  		//     }
+  		//   ]
+  		// }
       if(ret.ret === '0'){
         this.trainDetailInfo = ret.trainDetailInfos;
       }else{
