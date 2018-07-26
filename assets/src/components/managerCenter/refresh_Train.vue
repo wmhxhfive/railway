@@ -3,12 +3,6 @@
 	    <div class="cont-header">
 	    	<div class="cont-box">
 	    		<div class="condition">
-		    		<label>车型车号</label>
-		    		<input type='text' v-model.trim="railNo" placeholder="车型车号" />
-		    		<label>入库时间</label>
-		    		<input type='text' id='time' placeholder="入库时间" />
-		    	</div>
-	    		<div class="condition">
 		    		<label>选择站点</label>
 		    		<select v-model="railStation">
 					    <option disabled value="">请选择</option>
@@ -16,7 +10,7 @@
 					</select>
 		    		<label for="label">预警信息</label>
 		    		<input type='checkbox' id="label" v-model="isNormal"/>
-		    		<label>&nbsp;</label><button @click="search()">查询</button>
+		    		<!-- <label>&nbsp;</label><button @click="search()">查询</button> -->
 		    	</div>
 		    </div>
 	    	<div class="cont-line"></div>
@@ -28,7 +22,6 @@
 	    			<th>车型车号</th>
 	    			<th>入库时间</th>
 	    			<th>预警信息</th>
-	    			<!-- <th>异常原因</th> -->
 	    			<th>检测图片</th>
 	    		</tr>
 	    		<template v-if="searchList.length>0">
@@ -37,8 +30,7 @@
 		    			<td>{{item.railNo}}</td>
 		    			<td>{{item.checkDate}}</td>
 		    			<td :class="{error:item.isNormal=='1'}">{{item.isNormal=='1'?'有':'-'}}</td>
-		    			<!-- <td>{{item.errorReason||'-'}}</td> -->
-		    			<td><a href="javascript:;" @click="showDetail(item)">查看详情</a></td>
+		    			<td><a href="#/traindetail" @click="saveDetail(item)" target="_blank">查看详情</a></td>
 		    		</tr>
 	    		</template>
 	    		<template v-else>
@@ -48,18 +40,11 @@
 	    		</template>
 	    	</table>
 		</div>
-		<transition name="slide-fade">
-		<div class="detail-dialog" v-show="showDetailDialog">
-			<train-detail :trainInfo="trainInfo" :trainDetailInfo="trainDetailInfo" :editable="true"></train-detail>
-			<div class="close" @click="close"></div>
-		</div>
-		</transition>
 	</div>
 </template>
 
 <script>
 import config from '@/net/config'
-import trainInfoView from '@/components/monitor/trainDetail'
 var QS=require('qs');
 
 export default {
@@ -73,14 +58,8 @@ export default {
     	railStation:'合肥',
     	page: 0,//0开始
     	pageSize: 30,
-    	searchList: [],
-    	trainInfo: [],
-    	trainDetailInfo:[],
-    	showDetailDialog:false
+    	searchList: []
     }
-  },
-  components:{
-    'train-detail': trainInfoView
   },
   beforeCreate(){
     // if(!this.getCookie('token')){
@@ -102,53 +81,16 @@ export default {
 	})
 
   	this.loadTrainList();
+  	setInterval(()=>this.loadTrainList(), 30000);
   },
   methods:{
   	search(){  
   		this.loadTrainList();
   	},
-  	showDetail(info){
-  		this.trainInfo = info;
-		this.$ajax({
-	      method: 'post',
-	      url: config.urlList.trainDetail,
-	      transformRequest: [function (data) {
-	        return QS.stringify(data);
-	      }],
-	      data: { 
-	        id: info.id
-	      }
-	    }).then((data) => {
-	  	  var ret = data.data;
-	  //       ret = {
-			//   "ret": "0",
-			//   "message": "ok",
-			//   "trainInfos": [],
-			//   "trainDetailInfos": [
-			//     {
-			//       "trainInfoId": 14,
-			//       "partNo": "1",
-			//       "url": "www.baidu",
-			//       "analyResult": 1,
-			//       "checkDate": "2018-04-28 23:00:01"
-			//     },
-			//     {
-			//       "trainInfoId": 14,
-			//       "partNo": "2",
-			//       "url": "www.baidu",
-			//       "analyResult": 1,
-			//       "checkDate": "2018-04-28 23:00:01"
-			//     }
-			//   ]
-			// }
-	      if(ret.ret === '0'){
-	        this.trainDetailInfo = ret.trainDetailInfos;
-	        this.showDetailDialog = true;
-	      }else{
-	      	this.trainDetailInfo = [];
-	        this.showDetailDialog = false;
-	      }
-	    })
+  	saveDetail(item){
+  		if(window.localStorage){
+  			window.localStorage.setItem('BLANKTRAININFO', JSON.stringify(item));
+  		}
   	},
   	loadTrainList(){
 	  	this.$ajax({
@@ -171,16 +113,13 @@ export default {
 	  	  var ret = data.data;
 	  	  console.log('loadTrainList-', ret);
 	      if(ret.message == 'success'){
-	         // ret = {"ret":"0","message":"success","trainInfoList":[{"id":34,"railNo":"hello1","isNormal":null,"checkDate":"2018-04-28 23:00:01","railStation":"hf","errorReason":"11"},{"id":17,"railNo":"ca123","isNormal":null,"checkDate":"2018-04-28 23:00:00","railStation":"hf","errorReason":"11"},{"id":16,"railNo":"hello","isNormal":null,"checkDate":"2018-04-28 20:00:01","railStation":"hf","errorReason":"11"},{"id":15,"railNo":"ca123","isNormal":null,"checkDate":"2018-04-28 20:00:00","railStation":"hf","errorReason":"11"},{"id":14,"railNo":"hello","isNormal":null,"checkDate":"2018-04-28 23:00:01","railStation":"hf","errorReason":"11"},{"id":5,"railNo":"hello","isNormal":"0","checkDate":"2018-04-21 23:00:01","railStation":"hf","errorReason":"11"},{"id":2,"railNo":"ca123","isNormal":"0","checkDate":"2018-04-21 23:00:00","railStation":"hf","errorReason":"11"},{"id":1,"railNo":"ca123","isNormal":"0","checkDate":"2018-04-17 23:00:00","railStation":"hf","errorReason":"11"}],"totalNum":8,"totalPage":1}
+	          // ret = {"ret":"0","message":"success","trainInfoList":[{"id":34,"railNo":"hello1","isNormal":null,"checkDate":"2018-04-28 23:00:01","railStation":"hf","errorReason":"11"},{"id":17,"railNo":"ca123","isNormal":null,"checkDate":"2018-04-28 23:00:00","railStation":"hf","errorReason":"11"},{"id":16,"railNo":"hello","isNormal":null,"checkDate":"2018-04-28 20:00:01","railStation":"hf","errorReason":"11"},{"id":15,"railNo":"ca123","isNormal":null,"checkDate":"2018-04-28 20:00:00","railStation":"hf","errorReason":"11"},{"id":14,"railNo":"hello","isNormal":null,"checkDate":"2018-04-28 23:00:01","railStation":"hf","errorReason":"11"},{"id":5,"railNo":"hello","isNormal":"0","checkDate":"2018-04-21 23:00:01","railStation":"hf","errorReason":"11"},{"id":2,"railNo":"ca123","isNormal":"0","checkDate":"2018-04-21 23:00:00","railStation":"hf","errorReason":"11"},{"id":1,"railNo":"ca123","isNormal":"0","checkDate":"2018-04-17 23:00:00","railStation":"hf","errorReason":"11"}],"totalNum":8,"totalPage":1}
 	        this.searchList = ret.trainInfoList;
 	      }else{
 	      	this.searchList = [];
 	      }
 	    })
 	},
-	close(){
-		this.showDetailDialog = false;
-	}
   }
 }
 </script>

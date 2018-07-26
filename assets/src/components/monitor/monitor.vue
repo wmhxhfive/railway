@@ -16,7 +16,7 @@
 <script>
 import train from '@/components/monitor/train'
 import trainInfo from '@/components/monitor/trainDetail'
-import config from '@/config'
+import config from '@/net/config'
 var QS = require('qs');
 
 export default {

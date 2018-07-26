@@ -21,11 +21,11 @@ export default {
     return {
       username: '',
       mark: 0,
-      menu_close: false,
-      iframeURL: '#/index',
+      menu_close: true,
+      iframeURL: '#/trainload',
       btnList: [{
         name: '首页',
-        page: 'index'
+        page: 'trainload'
       },{
         name: '机车列表',
         page: 'page_Train'

@@ -28,13 +28,13 @@
     </div>
   </div>
   <div style="text-align:center;margin:50px 0; font:normal 25px/36px '隶书';color:#000000">
-<h1><img src="../../assets/logo.png"/>机车设备智能监测</h1>
+<h2><img src="../../assets/logo.png"/>TDRS车载外部设备图像监测系统</h2>
 </div>
 </div>
 </template>
 
 <script>
-import config from '@/config'
+import config from '@/net/config'
 import md5 from 'js-md5';
 
 export default {
@@ -92,7 +92,10 @@ export default {
 </script>
 
 <style scoped="">
-h1 img{
+h1,h2,h3{
+  font-family: Cambria,"LiSu";
+}
+h1 img,h2 img,h3 img{
   height: 36px;
   margin-right: 20px;
 }

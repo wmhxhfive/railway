@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import config from '@/config'
+import config from '@/net/config'
 import md5 from 'js-md5';
 
 export default {

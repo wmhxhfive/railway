@@ -126,7 +126,6 @@ export default {
                 padding: 0 20px;
                 box-sizing: border-box;
                 height: calc(100% - 140px);
-                text-align: center;
             }
             .inp{
                 margin: 10px 0 0 20px;

@@ -23,7 +23,8 @@
       <span>机车设备智能检测</span>
     </div>
     <mydialog-bar v-model="sendVal" type="defalut" :title="Title" :cancel="clickCancel">
-      <img id="bigImg" class="train-big-img" :src="imgUrl" />
+      <div class="big-img-box" ref="imgHtml">
+      </div>
       <!-- <a class="rorate-btn" @click="rotateImg" title="旋转"></a> -->
       <!-- 故障编辑 -->
       <div class="edit-box">
@@ -44,7 +45,7 @@
 
 <script>
 import dialogBar from '@/components/common/dialogBar'
-import config from '@/config'
+import config from '@/net/config'
 
 export default {
   name: 'monitor',
@@ -53,7 +54,7 @@ export default {
     return {
       Title: '',
       sendVal: false,//控制显示
-      imgUrl:'',//dialog image url
+      imgHtml: '',
       eidtId: null,
       isEditing: false,
       errorReason:'',//错误信息
@@ -77,18 +78,18 @@ export default {
   methods:{
     showImage(item){
       this.editingItem = item;
-      this.imgUrl = item.url;
       this.Title = this.getTitle(item.partNo);
       this.eidtId = item.id;
       this.errorReason = item.errorReason;
       this.sendVal = true;
       this.rotate = 0;
       this.isEditing = false;
+      this.$refs.imgHtml.innerHTML = `<img id="bigImg" src="${item.url}" />`
 
-      console.log(item);
-      // this.$nextTick(function(){
-      //   $('#bigImg').attr('height', $('#bigImg').height()).attr('width', $('#bigImg').width())
-      // })
+      this.$nextTick(function(){
+        $('#bigImg').smartZoom({});
+      })
+
     },
     clickCancel(){
     },
@@ -248,7 +249,11 @@ export default {
   opacity: 0.2;
   color: #1e1b1b;
 }
-.train-big-img{max-width: 100%;height: 100%;display: inline-block;}
+.big-img-box{
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
 .rorate-btn {
   display: inline-block;
   position: absolute;
