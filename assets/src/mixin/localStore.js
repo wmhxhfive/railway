@@ -48,6 +48,21 @@ var myMixin = {
 	        return this.getCookie(k) || '';
 	    }
 	},
+	/**
+     * 获取URL参数
+     * 
+     */
+    getParameter: function (s) {
+        var uri = location.search.replace('?', '');
+        var reg = new RegExp("(^|&)" + s + "=([^&]*)(&|$)", "i");
+        var r = uri.match(reg);
+
+        if (r != null) {
+            return unescape(r[2]);
+        }
+
+        return '';
+    }
   }
 }
 

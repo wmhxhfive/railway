@@ -51,10 +51,16 @@ export default {
         showBtn: true,
       } 
   },
+  mounted () {
+    document.addEventListener("keydown", (e) => {
+      if(e.which == 13) this.login();
+    });
+  },
   methods: {
     login(){
       if(!this.username || !this.password){
         this.needed = true;
+        alert('用户名或密码不能为空！')
         return;
       }
       this.needed = false;
