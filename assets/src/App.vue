@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <router-view/>
-    <alert-view ref="alert">我是一个确认框</alert-view>
+    <alert-view></alert-view>
   </div>
 </template>
 

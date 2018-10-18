@@ -1,116 +1,82 @@
 <template>
-<transition name='fade'>
- <div class="alert" v-if="showAlert">
-  <div class="wrap">
-   <div class="head">{{title}}</div>
-   <div class="body">
-    <slot>
-     <p>{{message}}</p>
-    </slot>
-   </div>
-   <div class="foot">
-    <div v-if="type === 'confirm'">
-     <button class="btn-base" @click="sure">确定</button>
-     <button class="btn-gray" @click="cancel">取消</button>
-    </div>
-    <div v-else-if="type === 'inform'">
-     <button class="btn-base" @click="cancel">知道了</button>
-    </div>
-   </div>
+  <div class="com-alert">
+    <transition-group name="list" tag="ul">
+      <li v-for="item in msg" v-bind:key="item.time" :class="{cred: item.color}">
+        <div>
+          {{item.msg}}
+        </div>
+      </li>
+    </transition-group>
   </div>
- </div>
-</transition>
 </template>
 <script>
 export default {
  name: 'alert',
  data() {
   return {
-   showAlert: false,
+    msg: []
   };
  },
- props: {
-  title: {
-   type: String,
-   default: '提示',
-  },
-  message: {
-   type: String,
-  },
-  type: { // 可以有confirm, 和inform两个类型
-   type: String,
-   default: 'confirm',
-   validator(value) {
-    return value === 'confirm' || value === 'inform';
-   },
-  },
-  sureBtn: {
-   type: Function,
-  },
-  cancelBtn: {
-   type: Function,
-  },
-  context: {
-   type: Object,
-  },
+ mounted () {
+  window.alert = this.alert
+  window.toast = this.toast
  },
  methods: {
-  cancel() {
-   if (this.cancelBtn) {
-    this.cancelBtn.apply(this.context);
-   }
-   this.close();
+  alert (msg, fn) {
+    this.toast (msg, fn, true);
   },
-  sure() {
-   if (this.sureBtn) {
-    this.sureBtn.apply(this.context);
-   }
-   this.close();
-  },
-  show() {
-   this.showAlert = true;
-  },
-  close() {
-   this.showAlert = false;
-  },
+  toast (msg, fn, color) {
+    this.msg.push({
+      msg: msg,
+      color: color || false,
+      time: Math.floor(Math.random() * 100000)
+    });
+    setTimeout(()=>{
+      this.msg.shift();
+      fn && fn();
+    }, 5000)
+  }
  },
+ watch:{
+  msg () {
+    
+  }
+ }
 };
 </script>
-<!-- Add "scoped" attribute to limit CSS to this component only -->
+
 <style scoped>
-.alert {
+.com-alert {
  position: fixed;
- top: 0;
- left: 0;
- right: 0;
- bottom: 0;
- background: rgba(0,0,0, 0.8);
- z-index: 1000;
+ top: 50px;
+ right: 20px;
+ width: 350px;
+ z-index: 9990;
  transition: all .3s ease-in-out;
 }
-.wrap {
- position: absolute;
- z-index: 1002;
- min-width: 400px;
- background: #fff;
- left: 50%;
- top: 50%;
- transform: translate(-50%, -50%);
- border-radius: 4px;
+.com-alert li {
+  width: 100%;
+  text-align: center;
+  padding: 30px 20px;
+  background: #d2e2ff;
+  border: 1px solid #69d8ff;
+  color: #238c22;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+  list-style: none;
 }
-.head {
- height: 40px;
- line-height: 40px;
- border-bottom: 1px solid #dedede;
- padding-left: 10px;
- color: #333;
+.com-alert li.cred {
+  color: #c23a1a;
 }
-.body {
- padding: 40px 20px;
- text-align: center;
+.list-enter-active, .list-leave-active {
+  transition: all 0.5s;
 }
-.foot {
- height: 50px;
- text-align: center;
+.list-enter {
+  opacity: 0;
+  transform: translateY(30px);
+}
+.list-leave-to {
+  opacity: 0;
+  transform: translateY(-30px);
 }
 </style>

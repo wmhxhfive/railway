@@ -39,6 +39,13 @@
 		    		</tr>
 	    		</template>
 	    	</table>
+	    	<div class="page-box" v-show="totalPage > 1">
+	    		<div class="page-inner">
+	    			<span>第{{page}}页 / 共{{totalPage}}页</span>
+	    			<a :class="{dis: page<=1}" @click="page--">上一页</a>
+	    			<a :class="{dis: page>=totalPage}" @click="page++">下一页</a>
+	    		</div>
+	    	</div>
 		</div>
 	</div>
 </template>
@@ -59,8 +66,9 @@ export default {
     	endCheckDate: '',
     	isNormal: true,//0无 1有
     	railStation:'合肥',
-    	page: 0,//0开始
-    	pageSize: 30,
+    	page: 1,// 接口从0开始
+    	pageSize: 20,
+    	totalPage: 0,
     	searchList: []
     }
   },
@@ -79,7 +87,9 @@ export default {
 	})
 
   	this.loadTrainList();
-  	setInterval(()=>this.loadTrainList(), 30000);
+  	this.timer = setInterval(()=>this.loadTrainList(), 30000);
+  },
+  actived(){
   },
   methods:{
   	search(){  
@@ -102,20 +112,24 @@ export default {
 			railStation: this.railStation,
 			beginCheckDate: this.beginCheckDate,
 			endCheckDate: this.endCheckDate,
-			page: this.page,
+			page: this.page-1,
 			pageSize: this.pageSize,
 	      }
 	    }).then((data) => {
 	  	  var ret = data.data;
 	  	  console.log('loadTrainList-', ret);
 	      if(ret.message == 'success'){
-	          // ret = {"ret":"0","message":"success","trainInfoList":[{"id":34,"railNo":"hello1","isNormal":null,"checkDate":"2018-04-28 23:00:01","railStation":"hf","errorReason":"11"},{"id":17,"railNo":"ca123","isNormal":null,"checkDate":"2018-04-28 23:00:00","railStation":"hf","errorReason":"11"},{"id":16,"railNo":"hello","isNormal":null,"checkDate":"2018-04-28 20:00:01","railStation":"hf","errorReason":"11"},{"id":15,"railNo":"ca123","isNormal":null,"checkDate":"2018-04-28 20:00:00","railStation":"hf","errorReason":"11"},{"id":14,"railNo":"hello","isNormal":null,"checkDate":"2018-04-28 23:00:01","railStation":"hf","errorReason":"11"},{"id":5,"railNo":"hello","isNormal":"0","checkDate":"2018-04-21 23:00:01","railStation":"hf","errorReason":"11"},{"id":2,"railNo":"ca123","isNormal":"0","checkDate":"2018-04-21 23:00:00","railStation":"hf","errorReason":"11"},{"id":1,"railNo":"ca123","isNormal":"0","checkDate":"2018-04-17 23:00:00","railStation":"hf","errorReason":"11"}],"totalNum":8,"totalPage":1}
+	            //ret = {"ret":"0","message":"success","trainInfoList":[{"id":34,"railNo":"hello1","isNormal":null,"checkDate":"2018-04-28 23:00:01","railStation":"hf","errorReason":"11"},{"id":17,"railNo":"ca123","isNormal":null,"checkDate":"2018-04-28 23:00:00","railStation":"hf","errorReason":"11"},{"id":16,"railNo":"hello","isNormal":null,"checkDate":"2018-04-28 20:00:01","railStation":"hf","errorReason":"11"},{"id":15,"railNo":"ca123","isNormal":null,"checkDate":"2018-04-28 20:00:00","railStation":"hf","errorReason":"11"},{"id":14,"railNo":"hello","isNormal":null,"checkDate":"2018-04-28 23:00:01","railStation":"hf","errorReason":"11"},{"id":5,"railNo":"hello","isNormal":"0","checkDate":"2018-04-21 23:00:01","railStation":"hf","errorReason":"11"},{"id":2,"railNo":"ca123","isNormal":"0","checkDate":"2018-04-21 23:00:00","railStation":"hf","errorReason":"11"},{"id":1,"railNo":"ca123","isNormal":"0","checkDate":"2018-04-17 23:00:00","railStation":"hf","errorReason":"11"}],"totalNum":8,"totalPage":3}
 	        this.searchList = ret.trainInfoList;
+	        this.totalPage = ret.totalPage;
 	      }else{
 	      	this.searchList = [];
 	      }
 	    })
 	},
+  },
+  beforeDestroy(){
+  	this.timer && clearInterval(this.timer)
   }
 }
 </script>

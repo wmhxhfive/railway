@@ -37,7 +37,7 @@ export default {
   },
   created(){
     this.init();
-    setInterval(()=>this.init(), 30000)
+    this.timer && setInterval(()=>this.init(), 30000)
   },
   methods:{
     init() {
@@ -77,6 +77,9 @@ export default {
     trainIndex: function(){
       this.trainInfoChange()
     }
+  },
+  beforeDestroy(){
+    this.timer && clearInterval(this.timer)
   }
 }
 </script>

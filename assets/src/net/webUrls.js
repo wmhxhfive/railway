@@ -8,6 +8,7 @@ export default {
     checkUser: process.env.API_ROOT+'/train/sys/check',
     register: process.env.API_ROOT+'/train/sys/register',
     update:process.env.API_ROOT+'/train/trainInfo/update',
+    delete: process.env.API_ROOT+'/train/trainInfo/delete',
   },
   INAPP: 'INAPP'
 }

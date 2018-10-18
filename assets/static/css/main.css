@@ -22,4 +22,9 @@ table.list-table a:active{color: #ff6122;}
 table.list-table td.ok {color: #176516;}
 table.list-table td.error {color: #ff0000;}
 table.list-table th {background-image: radial-gradient(#d6edfc, #8fcbf4);background-repeat:repeat-x;height:30px;}
+.page-box {width: 100%;position: relative;}
+.page-inner {position: absolute;right: 20px;}
+.page-inner a {padding: 10px;background-color: #89c4eb;color: #fff;margin: 0 2px;cursor: pointer;}
+.page-inner a:hover{background-color: #4b81a5;}
+.page-inner a.dis {background-color: #c0baba;}
 .alert-box {z-index: 9999;position: fixed;top: 50%;left: 50%;background: rgba(0, 0, 0, 0.7);padding: 15px 30px;color: #ffffff;border-radius: 5px;transform:translate(-50%, -50%);}

@@ -59,6 +59,7 @@ export default {
     register(){
       if(!this.username || !this.password){
         this.needed = true;
+        alert('用户名或密码不能为空！')
         return;
       }
       this.needed = false;
@@ -77,7 +78,7 @@ export default {
          }
       }).then((data) => {
         console.log(data);
-        alert(data.data.message, function(){
+        toast(data.data.message, ()=>{
           if(data.data.ret === '0'){
             window.location.reload();
           }else{

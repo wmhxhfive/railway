@@ -53,7 +53,11 @@ var myMixin = {
      * 
      */
     getParameter: function (s) {
-        var uri = location.search.replace('?', '');
+    	var uri = location.href;
+        uri = uri.substring(uri.indexOf('?')+1);
+        if(uri.indexOf('#')>=0){
+	        uri = uri.substring(0, uri.indexOf('#'));
+	    }
         var reg = new RegExp("(^|&)" + s + "=([^&]*)(&|$)", "i");
         var r = uri.match(reg);
 

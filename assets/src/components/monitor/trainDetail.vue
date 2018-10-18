@@ -6,8 +6,9 @@
         <span>入库时间： <span class="time">{{new Date(trainInfo.checkDate).format('yyyy年mm月dd日 hh:ii:ss')}}</span></span>
     </div>
     <ul class="img-list" :class="{more: trainDetailInfo.length>9}">
-      <li v-for="item in trainDetailInfo" :class="{'is-error':item.analyResult}" @click="showImage(item)">
+      <li v-for="item in trainDetailInfo" :class="{'is-error':item.analyResult}" @click="showImage(item)" :id="'li_'+item.id">
         <img :src="item.url"/>
+        <span class="deleteBtn" v-show="admin" @click.stop="deleteItem(item.id, $event)">删除</span>
         <div class="part-no">{{getTitle(item.partNo)}}</div>
         <span class="analysis-res" v-if="item.analyResult">
           <img src="../../assets/warn-tg.png"/>
@@ -20,7 +21,7 @@
     <div class="err-corner" v-show="showfoot">
       <div>合肥站</div>
       <img src="../../assets/logo.png"/>
-      <span>机车设备智能检测</span>
+      <span>TDRS车载外部设备图像监测系统</span>
     </div>
     <mydialog-bar v-model="sendVal" type="defalut" :title="Title" :cancel="clickCancel">
       <div class="big-img-box" ref="imgHtml">
@@ -63,6 +64,7 @@ export default {
       originError: '',// 保存原错误信息
       editingItem: null,
       rotate: 0,
+      admin: false, // 控制“删除”按钮
       railNoList:{
         '1': 'Ⅰ左信号感应器',
         '2': 'Ⅰ右信号感应器',
@@ -73,6 +75,10 @@ export default {
         '7': '机车标签'
       }
     }
+  },
+  created(){
+    console.log('==', this.getParameter('admin'));
+    this.admin = this.getParameter('admin')
   },
   components:{
     'mydialog-bar': dialogBar,
@@ -139,6 +145,30 @@ export default {
         }
       })
     },
+    deleteItem(id, event){
+      console.log('==》 ', event);
+      if(!confirm('确定删除吗？')){
+        return;
+      }
+      this.$ajax({
+          method: 'post',
+          url: webUrls.urlList.delete,
+          headers:{"Content-Type": "application/json; charset=utf-8"},
+          params: { 
+             id: id
+          }
+        }).then((data) => {
+          var ret = data.data;
+          if(ret.ret == '0'){
+            alert('删除成功');
+            if (event) {
+                $(event.target).closest('li').remove()
+            }
+          }else{
+            alert('删除失败')
+          }
+        })
+    },
     getTitle(no){
       var res = "";
       if(no.indexOf('-')>-1){
@@ -198,6 +228,14 @@ export default {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
+}
+.img-list .deleteBtn{
+  position: absolute;
+  right: 5px;
+}
+.img-list .deleteBtn:hover{
+  text-decoration: underline;
+  color: #1046c2;
 }
 .img-list .analysis-res{
   height: 30px;

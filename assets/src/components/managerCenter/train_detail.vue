@@ -9,11 +9,11 @@ import webUrls from '@/net/webUrls'
 import trainInfoView from '@/components/monitor/trainDetail'
 import checkLoginStatus from '@/mixin/checkLoginStatus'
 import localStore from '@/mixin/localStore'
-var QS=require('qs');
+var QS = require('qs');
 
 export default {
   name: 'page_Train',
-  mixins: [localStore],
+  mixins: [ localStore ],
   data () {
     return {
     	trainInfo: {},

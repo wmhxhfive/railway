@@ -33,7 +33,7 @@
 	    		</tr>
 	    		<template v-if="searchList.length>0">
 		    		<tr v-for="item,index in searchList">
-		    			<td>{{++index}}</td>
+		    			<td>{{pageSize*(page-1)+ ++index}}</td>
 		    			<td>{{item.railNo}}</td>
 		    			<td>{{item.checkDate}}</td>
 		    			<td :class="{error:item.isNormal=='1'}">{{item.isNormal=='1'?'有':'-'}}</td>
@@ -47,6 +47,13 @@
 		    		</tr>
 	    		</template>
 	    	</table>
+	    	<div class="page-box" v-show="totalPage > 1">
+	    		<div class="page-inner">
+	    			<span>第{{page}}页 / 共{{totalPage}}页</span>
+	    			<a :class="{dis: page<=1}" @click="page>1?page--:{}">上一页</a>
+	    			<a :class="{dis: page>=totalPage}" @click="page<totalPage?page++:{}">下一页</a>
+	    		</div>
+	    	</div>
 		</div>
 		<transition name="slide-fade">
 		<div class="detail-dialog" v-show="showDetailDialog">
@@ -73,12 +80,14 @@ export default {
     	endCheckDate: '',
     	isNormal: true,//0无 1有
     	railStation:'合肥',
-    	page: 0,//0开始
-    	pageSize: 30,
+    	page: 1,// 接口从0开始
+    	pageSize: 20,
+    	totalPage: 0,
     	searchList: [],
     	trainInfo: [],
     	trainDetailInfo:[],
-    	showDetailDialog:false
+    	showDetailDialog:false,
+    	searchListTmp: []
     }
   },
   components:{
@@ -161,15 +170,18 @@ export default {
 			railStation: this.railStation,
 			beginCheckDate: this.beginCheckDate,
 			endCheckDate: this.endCheckDate,
-			page: this.page,
+			page: this.page-1,
 			pageSize: this.pageSize,
 	      }
 	    }).then((data) => {
 	  	  var ret = data.data;
 	  	  console.log('loadTrainList-', ret);
 	      if(ret.message == 'success'){
-	         // ret = {"ret":"0","message":"success","trainInfoList":[{"id":34,"railNo":"hello1","isNormal":null,"checkDate":"2018-04-28 23:00:01","railStation":"hf","errorReason":"11"},{"id":17,"railNo":"ca123","isNormal":null,"checkDate":"2018-04-28 23:00:00","railStation":"hf","errorReason":"11"},{"id":16,"railNo":"hello","isNormal":null,"checkDate":"2018-04-28 20:00:01","railStation":"hf","errorReason":"11"},{"id":15,"railNo":"ca123","isNormal":null,"checkDate":"2018-04-28 20:00:00","railStation":"hf","errorReason":"11"},{"id":14,"railNo":"hello","isNormal":null,"checkDate":"2018-04-28 23:00:01","railStation":"hf","errorReason":"11"},{"id":5,"railNo":"hello","isNormal":"0","checkDate":"2018-04-21 23:00:01","railStation":"hf","errorReason":"11"},{"id":2,"railNo":"ca123","isNormal":"0","checkDate":"2018-04-21 23:00:00","railStation":"hf","errorReason":"11"},{"id":1,"railNo":"ca123","isNormal":"0","checkDate":"2018-04-17 23:00:00","railStation":"hf","errorReason":"11"}],"totalNum":8,"totalPage":1}
+	          //ret = {"ret":"0","message":"success","trainInfoList":[{"id":34,"railNo":"hello1","isNormal":null,"checkDate":"2018-04-28 23:00:01","railStation":"hf","errorReason":"11"},{"id":17,"railNo":"ca123","isNormal":null,"checkDate":"2018-04-28 23:00:00","railStation":"hf","errorReason":"11"},{"id":16,"railNo":"hello","isNormal":null,"checkDate":"2018-04-28 20:00:01","railStation":"hf","errorReason":"11"},{"id":15,"railNo":"ca123","isNormal":null,"checkDate":"2018-04-28 20:00:00","railStation":"hf","errorReason":"11"},{"id":14,"railNo":"hello","isNormal":null,"checkDate":"2018-04-28 23:00:01","railStation":"hf","errorReason":"11"},{"id":5,"railNo":"hello","isNormal":"0","checkDate":"2018-04-21 23:00:01","railStation":"hf","errorReason":"11"},{"id":2,"railNo":"ca123","isNormal":"0","checkDate":"2018-04-21 23:00:00","railStation":"hf","errorReason":"11"},{"id":1,"railNo":"ca123","isNormal":"0","checkDate":"2018-04-17 23:00:00","railStation":"hf","errorReason":"11"}],"totalNum":1000,"totalPage":5}
 	        this.searchList = ret.trainInfoList;
+	        this.totalPage = ret.totalPage;
+	        // this.totalPage = Math.ceil(ret.trainInfoList.length/20);
+	        // this.initPageList();
 	      }else{
 	      	this.searchList = [];
 	      }
@@ -177,7 +189,20 @@ export default {
 	},
 	close(){
 		this.showDetailDialog = false;
+	},
+	initPageList(){
+		this.searchList = [];
+  		for(var i=(this.page-1)*20;i<this.page * 20;i++){
+  			if(this.searchListTmp[i])
+  				this.searchList.push(this.searchListTmp[i])
+  		}
 	}
+  },
+  watch:{
+  	page(){
+  		this.loadTrainList();
+  		// this.initPageList();
+  	}
   }
 }
 </script>
