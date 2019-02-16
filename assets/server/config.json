@@ -1,0 +1,95 @@
+[
+  {
+    "url": "/train/sys/login",
+    "method": "post",
+    "response": {"ret":"0","message":"登陆成功","code":null}
+  },
+  {
+    "url": "/train/trainInfo/screen",
+    "method": "post",
+    "response": {
+      "ret": "0",
+      "message": "系统异常，请重试",
+      "body": {
+        "userStatus": "0"
+      }
+    }
+  },
+  {
+    "url": "/train/trainInfo/list",
+    "method": "post",
+    "response":  {
+      "ret":"0",
+      "message":"success",
+      "trainInfoList":[
+        {"id":34,"railNo":"hello1","isNormal":null,"checkDate":"2018-04-28 23:00:01","railStation":"hf","errorReason":"11"},
+        {"id":17,"railNo":"ca123","isNormal":null,"checkDate":"2018-04-28 23:00:00","railStation":"hf","errorReason":"11"},
+        {"id":16,"railNo":"hello","isNormal":null,"checkDate":"2018-04-28 20:00:01","railStation":"hf","errorReason":"11"},
+        {"id":15,"railNo":"ca123","isNormal":null,"checkDate":"2018-04-28 20:00:00","railStation":"hf","errorReason":"11"},
+        {"id":14,"railNo":"hello","isNormal":null,"checkDate":"2018-04-28 23:00:01","railStation":"hf","errorReason":"11"},
+        {"id":5,"railNo":"hello","isNormal":"0","checkDate":"2018-04-21 23:00:01","railStation":"hf","errorReason":"11"},
+        {"id":2,"railNo":"ca123","isNormal":"0","checkDate":"2018-04-21 23:00:00","railStation":"hf","errorReason":"11"},
+        {"id":1,"railNo":"ca123","isNormal":"0","checkDate":"2018-04-17 23:00:00","railStation":"hf","errorReason":"11"}
+      ],
+      "totalNum":8,
+      "totalPage":3
+    }
+  },
+  {
+    "url": "/train/trainInfo/detail",
+    "method": "post",
+    "response": {
+      "ret": "0",
+      "message": "ok",
+      "trainInfos": [],
+      "trainDetailInfos": [
+        {
+          "trainInfoId": 14,
+          "partNo": "1",
+          "url": "www.baidu",
+          "analyResult": 1,
+          "checkDate": "2018-04-28 23:00:01"
+        },
+        {
+          "trainInfoId": 14,
+          "partNo": "2",
+          "url": "www.baidu",
+          "analyResult": 1,
+          "checkDate": "2018-04-28 23:00:01"
+        }
+      ]
+    }
+  },
+  {
+    "url": "/train/sys/check",
+    "method": "get",
+    "response": {
+      "ret": "1",
+      "message": "重复"
+    }
+  },
+  {
+    "url": "/train/sys/register",
+    "method": "post",
+    "response": {
+      "ret": "0",
+      "message": "添加成功"
+    }
+  },
+  {
+    "url": "/train/trainInfo/update",
+    "method": "post",
+    "response": {
+      "ret": "0",
+      "message": "保存成功"
+    }
+  },
+  {
+    "url": "/train/trainInfo/delete",
+    "method": "post",
+    "response": {
+      "ret": "0",
+      "message": "删除成功"
+    }
+  }
+]

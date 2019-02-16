@@ -10,16 +10,17 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {
-        // proxy all requests starting with /api to jsonplaceholder
-      '/train/': {
-            target: 'http://106.12.21.105',
-            changeOrigin: true,
-            pathRewrite: {  //需要rewrite重写的, 如果在服务器端做了处理则可以不要这段
-              '^/train/': 'train/'
-            }
-        }
-    },
+    // proxyTable: {
+    //     // proxy all requests starting with /api to jsonplaceholder
+    //   '/train/': {
+    //         // target: 'http://106.12.21.105', // 测试
+    //         target: 'http://127.0.0.1:10086', // 本地
+    //         changeOrigin: true,
+    //         pathRewrite: {  //需要rewrite重写的, 如果在服务器端做了处理则可以不要这段
+    //           '^/train/': '/train/'
+    //         }
+    //     }
+    // },
 
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST

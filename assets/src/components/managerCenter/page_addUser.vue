@@ -33,7 +33,7 @@ export default {
       password:'',
       moblie: '',
       errMsg:'',
-      errMsgRed: false,
+      errMsgRed: true,
       needed: false,
       showBtn: true,
     }
@@ -57,6 +57,11 @@ export default {
       })
     },
     register(){
+       if(this.errMsgRed){
+        this.needed = true;
+        alert('用户名重复')
+        return;
+      }
       if(!this.username || !this.password){
         this.needed = true;
         alert('用户名或密码不能为空！')

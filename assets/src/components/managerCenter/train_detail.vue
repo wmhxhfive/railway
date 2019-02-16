@@ -26,41 +26,20 @@ export default {
   mounted(){
 		this.trainInfo = JSON.parse(this.getLocalSave('BLANKTRAININFO'));
   	this.$ajax({
-        method: 'post',
-        url: webUrls.urlList.trainDetail,
-        transformRequest: [function (data) {
-          return QS.stringify(data);
-        }],
-        data: { 
-          id: this.trainInfo.id
-        }
-      }).then((data) => {
-    	  var ret = data.data;
-    //       ret = {
-  		//   "ret": "0",
-  		//   "message": "ok",
-  		//   "trainInfos": [],
-  		//   "trainDetailInfos": [
-  		//     {
-  		//       "trainInfoId": 14,
-  		//       "partNo": "1",
-  		//       "url": "www.baidu",
-  		//       "analyResult": 1,
-  		//       "checkDate": "2018-04-28 23:00:01"
-  		//     },
-  		//     {
-  		//       "trainInfoId": 14,
-  		//       "partNo": "2",
-  		//       "url": "www.baidu",
-  		//       "analyResult": 1,
-  		//       "checkDate": "2018-04-28 23:00:01"
-  		//     }
-  		//   ]
-  		// }
+      method: 'post',
+      url: webUrls.urlList.trainDetail,
+      transformRequest: [function (data) {
+        return QS.stringify(data);
+      }],
+      data: { 
+        id: this.trainInfo.id
+      }
+    }).then((data) => {
+      var ret = data.data;
       if(ret.ret === '0'){
         this.trainDetailInfo = ret.trainDetailInfos;
       }else{
-      	this.trainDetailInfo = [];
+        this.trainDetailInfo = [];
       }
     })
   },
