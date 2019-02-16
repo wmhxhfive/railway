@@ -146,7 +146,7 @@ export default {
 .cont-line{
 	height: 15px;
 	width: 100%;
-	background: url('../../assets/cont_bg.png') repeat;
+	background: url('../../assets/images/cont_bg.png') repeat;
 }
 .condition{
 	padding: 10px 0 0;

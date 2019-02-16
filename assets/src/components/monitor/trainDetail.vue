@@ -11,7 +11,7 @@
         <span class="deleteBtn" v-show="admin" @click.stop="deleteItem(item.id, $event)">删除</span>
         <div class="part-no">{{getTitle(item.partNo)}}</div>
         <span class="analysis-res" v-if="item.analyResult">
-          <img src="../../assets/warn-tg.png"/>
+          <img src="../../assets/images/warn-tg.png"/>
         </span>
         <div class="err-cont" v-if="item.analyResult" :title="item.errorReason">
           <span>{{item.errorReason}}</span>
@@ -20,7 +20,7 @@
     </ul>
     <div class="err-corner" v-show="showfoot">
       <div>合肥站</div>
-      <img src="../../assets/logo.png"/>
+      <img src="../../assets/images/logo.png"/>
       <span>TDRS车载外部设备图像监测系统</span>
     </div>
     <mydialog-bar v-model="sendVal" type="defalut" :title="Title" :cancel="clickCancel">
@@ -216,7 +216,7 @@ export default {
   box-sizing: border-box;
   cursor: pointer;
   text-align: center;
-  background: #ededed url('../../assets/default_img.png') no-repeat center/auto 60%;
+  background: #ededed url('../../assets/images/default_img.png') no-repeat center/auto 60%;
 }
 .img-list.more li{
   width: 24.8%;
@@ -299,7 +299,7 @@ export default {
   position: absolute;
   top: 20px;
   right: 60px;
-  background: url('../../assets/rorate-btn-img.png') no-repeat;
+  background: url('../../assets/images/rorate-btn-img.png') no-repeat;
   background-size: 25px;
   height: 25px;
   width: 25px;

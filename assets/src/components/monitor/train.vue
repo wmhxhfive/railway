@@ -79,7 +79,7 @@ export default {
   content: "";
   width: 18px;
   height: 40px;
-  background: url('../../assets/train-arrow.png') no-repeat;
+  background: url('../../assets/images/train-arrow.png') no-repeat;
   background-size: 18px;
   right: 0;
   top: calc(7vh - 18px);
@@ -93,11 +93,11 @@ export default {
   display: inline-block;
   width: 25px;
   height:25px;
-  background: url('../../assets/ok-tg.png') 0/25px no-repeat;
+  background: url('../../assets/images/ok-tg.png') 0/25px no-repeat;
   margin-left: 10px;
   vertical-align: middle;
 }
 .time-info .err-status-warn{
-  background: url("../../assets/warn-tg.png") 0/25px no-repeat;
+  background: url("../../assets/images/warn-tg.png") 0/25px no-repeat;
 }
 </style>

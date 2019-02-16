@@ -126,27 +126,6 @@ export default {
 	      }
 	    }).then((data) => {
 	  	  var ret = data.data;
-	  //       ret = {
-			//   "ret": "0",
-			//   "message": "ok",
-			//   "trainInfos": [],
-			//   "trainDetailInfos": [
-			//     {
-			//       "trainInfoId": 14,
-			//       "partNo": "1",
-			//       "url": "www.baidu",
-			//       "analyResult": 1,
-			//       "checkDate": "2018-04-28 23:00:01"
-			//     },
-			//     {
-			//       "trainInfoId": 14,
-			//       "partNo": "2",
-			//       "url": "www.baidu",
-			//       "analyResult": 1,
-			//       "checkDate": "2018-04-28 23:00:01"
-			//     }
-			//   ]
-			// }
 	      if(ret.ret === '0'){
 	        this.trainDetailInfo = ret.trainDetailInfos;
 	        this.showDetailDialog = true;
@@ -166,12 +145,12 @@ export default {
 	      }],
 	      data: { 
 	        railNo: this.railNo,
-			isNormal: this.isNormal?1:0,
-			railStation: this.railStation,
-			beginCheckDate: this.beginCheckDate,
-			endCheckDate: this.endCheckDate,
-			page: this.page-1,
-			pageSize: this.pageSize,
+					isNormal: this.isNormal?1:0,
+					railStation: this.railStation,
+					beginCheckDate: this.beginCheckDate,
+					endCheckDate: this.endCheckDate,
+					page: this.page-1,
+					pageSize: this.pageSize,
 	      }
 	    }).then((data) => {
 	  	  var ret = data.data;
@@ -219,7 +198,7 @@ export default {
 .cont-line{
 	height: 15px;
 	width: 100%;
-	background: url('../../assets/cont_bg.png') repeat;
+	background: url('../../assets/images/cont_bg.png') repeat;
 }
 .condition{
 	padding: 10px 0 0;

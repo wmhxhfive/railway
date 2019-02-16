@@ -1,7 +1,7 @@
 <template>
 	<div class="header">
     <a class="menu-click" @click="toggleHeaderMenu">菜单</a>
-    <img src="../../assets/header-img.png" class="header-kj"></img>
+    <img src="../../assets/images/header-img.png" class="header-kj"></img>
     <div class="header-user" @click="toggleHeaderUser">
       <!-- {{username}}<span class="down-arrow" :class="open?'up':''"></span> -->
       <transition name="fade">
@@ -16,7 +16,7 @@
       </transition>
     </div>
 		<div class="header-center">
-      <img src="../../assets/logo.png" /><span class="tdrs">TDRS</span>车载外部设备图像监测系统
+      <img src="../../assets/images/logo.png" /><span class="tdrs">TDRS</span>车载外部设备图像监测系统
     </div>
 	</div>
 </template>
@@ -57,7 +57,7 @@ export default {
 	height: 65px;
 	width: 100%;
   color: #fff;
-	background: url('../../assets/header-bg.png') repeat;
+	background: url('../../assets/images/header-bg.png') repeat;
 }
 .menu-click{
   position: absolute;
@@ -77,7 +77,7 @@ export default {
   margin: 0 auto;
   height: 65px;
   width: 600px;
-  background: url('../../assets/header-center-bg.png') repeat;
+  background: url('../../assets/images/header-center-bg.png') repeat;
   position: relative;
 }
 .header-center:before{
@@ -87,7 +87,7 @@ export default {
   width: 70px;
   position: absolute;
   left: -70px;
-  background: url('../../assets/header-center-left.png') no-repeat;
+  background: url('../../assets/images/header-center-left.png') no-repeat;
 }
 .header-center:after{
   content: "";
@@ -96,7 +96,7 @@ export default {
   width: 70px;
   position: absolute;
   right: -70px;
-  background: url('../../assets/header-center-right.png') no-repeat;
+  background: url('../../assets/images/header-center-right.png') no-repeat;
 }
 .header-center img{
   height: 30px;
