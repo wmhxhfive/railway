@@ -50,8 +50,10 @@
 	    	<div class="page-box" v-show="totalPage > 1">
 	    		<div class="page-inner">
 	    			<span>第{{page}}页 / 共{{totalPage}}页</span>
-	    			<a :class="{dis: page<=1}" @click="page>1?page--:{}">上一页</a>
-	    			<a :class="{dis: page>=totalPage}" @click="page<totalPage?page++:{}">下一页</a>
+						<a :class="{dis: page<=1}" @click="page>1?page--:{}">上一页</a>
+						<a :class="{dis: page>=totalPage}" @click="page<totalPage?page++:{}">下一页</a>
+						<input class="tmp-page" type="number" v-model="tmpPage"/>
+	    			<a @click="gotoPage" style="margin: 0;">确定</a>
 	    		</div>
 	    	</div>
 		</div>
@@ -80,14 +82,15 @@ export default {
     	endCheckDate: '',
     	isNormal: true,//0无 1有
     	railStation:'合肥',
-    	page: 1,// 接口从0开始
+			page: 1,// 接口从0开始
+			tmpPage: 1,
     	pageSize: 20,
     	totalPage: 0,
     	searchList: [],
     	trainInfo: [],
-    	trainDetailInfo:[],
+    	trainDetailInfo:{list: [], Index: []},
     	showDetailDialog:false,
-    	searchListTmp: []
+			searchListTmp: []
     }
   },
   components:{
@@ -115,7 +118,7 @@ export default {
   	},
   	showDetail(info){
   		this.trainInfo = info;
-		this.$ajax({
+			this.$ajax({
 	      method: 'post',
 	      url: webUrls.urlList.trainDetail,
 	      transformRequest: [function (data) {
@@ -127,14 +130,35 @@ export default {
 	    }).then((data) => {
 	  	  var ret = data.data;
 	      if(ret.ret === '0'){
-	        this.trainDetailInfo = ret.trainDetailInfos;
+	        this.trainInfoOp(ret.trainDetailInfos);
 	        this.showDetailDialog = true;
 	      }else{
 	      	this.trainDetailInfo = [];
 	        this.showDetailDialog = false;
 	      }
 	    })
-  	},
+		},
+    trainInfoOp(lists){
+      let trainDetailInfo = {list: [], Index: []}
+      for (var key in lists) {
+				let parts = this.getTitle(lists[key]['partNo'])
+				if(trainDetailInfo.Index.indexOf(parts[0])<0){
+					trainDetailInfo.Index.push(parts[0])
+					trainDetailInfo.list.push({ ...lists[key], partNumber: parts[0] })
+				}else{
+					if(!trainDetailInfo[parts[0]])
+					trainDetailInfo[parts[0]] = []
+            trainDetailInfo[parts[0]].push({ ...lists[key], partNumber: parts[0], partIndex: parts[1] })
+				}
+      }
+      console.log('List====>', trainDetailInfo)
+      this.trainDetailInfo = trainDetailInfo
+    },
+    getTitle(no){
+      var res = ['', ''];
+      res = no.split(/\-|\_/)
+      return res;
+    },
   	loadTrainList(){
 	  	this.$ajax({
 	      method: 'post',
@@ -164,6 +188,14 @@ export default {
 	      	this.searchList = [];
 	      }
 	    })
+	},
+	gotoPage (){
+		if(this.tmpPage < this.totalPage){
+			this.page = this.tmpPage
+		}else{
+			this.tmpPage = this.totalPage
+			this.page = this.totalPage
+		}
 	},
 	close(){
 		this.showDetailDialog = false;

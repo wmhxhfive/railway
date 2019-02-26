@@ -37,13 +37,34 @@ export default {
     }).then((data) => {
       var ret = data.data;
       if(ret.ret === '0'){
-        this.trainDetailInfo = ret.trainDetailInfos;
+        this.trainInfoOp(ret.trainDetailInfos);
       }else{
         this.trainDetailInfo = [];
       }
     })
   },
   methods:{
+    trainInfoOp(lists){
+      let trainDetailInfo = {list: [], Index: []}
+      for (var key in lists) {
+				let parts = this.getTitle(lists[key]['partNo'])
+				if(trainDetailInfo.Index.indexOf(parts[0])<0){
+					trainDetailInfo.Index.push(parts[0])
+					trainDetailInfo.list.push({ ...lists[key], partNumber: parts[0] })
+				}else{
+					if(!trainDetailInfo[parts[0]])
+					trainDetailInfo[parts[0]] = []
+            trainDetailInfo[parts[0]].push({ ...lists[key], partNumber: parts[0], partIndex: parts[1] })
+				}
+      }
+      console.log('List====>', trainDetailInfo)
+      this.trainDetailInfo = trainDetailInfo
+    },
+    getTitle(no){
+      var res = ['', ''];
+      res = no.split(/\-|\_/)
+      return res;
+    },
   	getParameter: function (s) {
         var uri = location.search.replace('?', '');
         var reg = new RegExp("(^|&)" + s + "=([^&]*)(&|$)", "i");

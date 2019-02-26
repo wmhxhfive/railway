@@ -7,6 +7,7 @@ import page_addUser from '@/components/managerCenter/page_addUser'
 import page_User from '@/components/managerCenter/page_User'
 import refresh_Train from '@/components/managerCenter/refresh_Train'
 import train_detail from '@/components/managerCenter/train_detail'
+import multi from '@/components/monitor/mutilImages'
 
 export default {
   routes: [
@@ -58,6 +59,10 @@ export default {
       path: '/traindetail',
       name: 'train_detail',
       component: train_detail
+    },{
+      path: '/multi',
+      name: 'multi',
+      component: multi
     }
   ],
   // mode: 'history'

@@ -1,20 +1,10 @@
 <template>
   <section>
-    <div class="detail-info" v-if="trainInfo">
-        <span>车型车号：<span class="time">{{trainInfo.railNo}}</span></span>
-        <!-- <span>是否异常： <b>{{trainInfo.isNormal?"是":"否"}}</b></span> -->
-        <span>入库时间： <span class="time">{{new Date(trainInfo.checkDate).format('yyyy年mm月dd日 hh:ii:ss')}}</span></span>
-    </div>
-    <ul class="img-list" :class="{more: trainDetailInfo.list && trainDetailInfo.list.length>9}">
-      <li v-for="item in trainDetailInfo.list" :class="{'is-error':item.analyResult}" @click="showImage(item)" :id="'li_'+item.id">
+    <ul class="img-list">
+      <li v-for="item in trainDetailInfo" :class="{'is-error':item.analyResult}" @click="showImage(item)" :id="'li_'+item.id">
         <img :src="item.url"/>
         <span class="deleteBtn" v-show="admin" @click.stop="deleteItem(item.id, $event)">删除</span>
-        <div class="part-no">{{railNoList[item.partNumber]}}</div>
-        <a class="images-count" v-if="trainDetailInfo[item.partNumber]" 
-          @click.stop="showMutilImages(trainDetailInfo[item.partNumber])"
-          href="#/multi" target="_blank">
-          <img src="../../assets/images/multi-pic.png"/>
-        </a>
+        <div class="part-no">{{railNoList[item.partNumber]}}{{item.partIndex}}</div>
         <span class="analysis-res" v-if="item.analyResult">
           <img src="../../assets/images/warn-tg.png"/>
         </span>
@@ -23,40 +13,26 @@
         </div>
       </li>
     </ul>
-    <div class="err-corner" v-show="showfoot">
-      <div>合肥站</div>
-      <img src="../../assets/images/logo.png"/>
-      <span>TDRS车载外部设备图像监测系统</span>
-    </div>
     <mydialog-bar v-model="sendVal" type="defalut" :title="Title" :cancel="clickCancel">
-      <div class="big-img-box" ref="imgHtml">
-      </div>
-      <!-- <a class="rorate-btn" @click="rotateImg" title="旋转"></a> -->
-      <!-- 故障编辑 -->
-      <div class="edit-box">
-        预警信息：
-        <template v-if="isEditing && editable">
-          <input class="edit-input" type="text" v-model="errorReason" />
-          <a @click="update">保存</a>
-          <a @click="cancelEdit">取消</a>
-        </template>
-        <template v-else>
+        <div class="big-img-box" ref="imgHtml">
+        </div>
+        <!-- <a class="rorate-btn" @click="rotateImg" title="旋转"></a> -->
+        <!-- 故障编辑 -->
+        <div class="edit-box">
+          预警信息：
           <span class="edit-text" :title="errorReason">{{errorReason||'无'}}</span>
-          <a v-show="editable" @click="edit">编辑</a><br>
-        </template>
-      </div>
-    </mydialog-bar>
+        </div>
+      </mydialog-bar>
   </section>    
 </template>
 
 <script>
-import dialogBar from '@/components/common/dialogBar'
-import webUrls from '@/net/webUrls'
-import localStore from '@/mixin/localStore'
+  import dialogBar from '@/components/common/dialogBar'
+  import webUrls from '@/net/webUrls'
+  import localStore from '@/mixin/localStore'
 
 export default {
-  name: 'monitor',
-  props:['trainInfo', 'trainDetailInfo', 'showfoot','editable'],
+  name: 'muitl',
   mixins: [localStore],
   data(){
     return {
@@ -82,7 +58,9 @@ export default {
     }
   },
   created(){
-    // console.log('==', this.getParameter('admin'));
+    let list = this.getLocalSave('MULTIIMAGELIST')
+    this.trainDetailInfo = list && JSON.parse(list)
+    console.log(this.trainDetailInfo)
     this.admin = this.getParameter('admin')
   },
   components:{
@@ -105,8 +83,8 @@ export default {
         $('#bigImg').smartZoom({});
       })
     },
-    showMutilImages(multiImgs){
-      this.setLocalSave('MULTIIMAGELIST', JSON.stringify(multiImgs))
+    showMutilImages(id){
+      
     },
     clickCancel(){
     },
@@ -183,21 +161,8 @@ export default {
 </script>
 
 <style>
-.detail-info {
-  height: 9vh; 
-  line-height: 9vh;
-  color: #0d90e1;
-  padding: 1vh 0 0 30px;
-  font-size: 20px;
-}
-.detail-info .time{
-  font-size: 30px;
-  padding-right:30px;
-  color: #1e1b1b;
-  font-weight: bold;
-}
 .img-list {
-  margin: 0 3vh;
+  margin: 3vh;
 }
 .img-list .is-error{
   border: 2px solid red;

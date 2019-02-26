@@ -28,7 +28,7 @@ export default {
       trainIndex: 0,
       trainInfos: [], //*/,
       trainDetailInfos: [],//*/,
-      trainDetailInfo: []
+      trainDetailInfo: {list: [], Index: []}
     }
   },
   components:{
@@ -61,13 +61,28 @@ export default {
       })
     },
     trainInfoChange(){
-      var list = this.trainDetailInfos;
-      this.trainDetailInfo = [];
-      for (var key in list) {
-        if(this.trainInfos[this.trainIndex]['id'] == list[key]['trainInfoId']){
-          this.trainDetailInfo.push(list[key])
+      let lists = this.trainDetailInfos;
+      let trainDetailInfo = {list: [], Index: []}
+      for (var key in lists) {
+        if(this.trainInfos[this.trainIndex]['id'] == lists[key]['trainInfoId']){
+          let parts = this.getTitle(lists[key]['partNo'])
+          if(trainDetailInfo.Index.indexOf(parts[0])<0){
+            trainDetailInfo.Index.push(parts[0])
+            trainDetailInfo.list.push({ ...lists[key], partNumber: parts[0] })
+          }else{
+            if(!trainDetailInfo[parts[0]])
+            trainDetailInfo[parts[0]] = []
+            trainDetailInfo[parts[0]].push({ ...lists[key], partNumber: parts[0], partIndex: parts[1] })
+          }
         }
       }
+      console.log('List====>', trainDetailInfo)
+      this.trainDetailInfo = trainDetailInfo
+    },
+    getTitle(no){
+      var res = ['', ''];
+      res = no.split(/\-|\_/)
+      return res;
     },
     changeTrain(index){
       this.trainIndex = index;

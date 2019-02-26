@@ -10,7 +10,7 @@
     "response": {
       "ret": "0",
       "trainInfos":[
-        {"id":14,"railNo":"DF070080","isNormal":"1","checkDate":"2018-04-28 23:00:01","railStation":"hf","errorReason":"机车标签外观有无缺损、裂纹、变形"},
+        {"id":14,"railNo":"DF07 0080","isNormal":"1","checkDate":"2018-04-28 23:00:01","railStation":"hf","errorReason":"机车标签外观有无缺损、裂纹、变形"},
         {"id":34,"railNo":"DF07 0081","isNormal":"0","checkDate":"2018-04-28 23:00:01","railStation":"hf","errorReason":"焊装支架有无开焊、变形"},
         {"id":17,"railNo":"DF07 0101","isNormal":null,"checkDate":"2018-04-28 23:00:00","railStation":"hf","errorReason":"6个安装螺丝有无缺失、缺损、松动"},
         {"id":16,"railNo":"DF08 0080","isNormal":null,"checkDate":"2018-04-28 20:00:01","railStation":"hf","errorReason":"开口销有无缺失"},
@@ -19,17 +19,20 @@
         {"id":15,"railNo":"DF07 0077","isNormal":null,"checkDate":"2018-04-28 20:00:00","railStation":"hf","errorReason":"连接电缆是否绑扎牢固、线缆固定卡有无脱落、电缆外观有无变形、缺损"}
       ],
       "trainDetailInfos":[
-        {"trainInfoId":14,"partNo":"1","url":"http://106.12.21.105/page/tmp_train.jpg","analyResult":0,"checkDate":"2018-04-28 23:00:01"},
-        {"trainInfoId":14,"partNo":"1","url":"http://106.12.21.105/page/tmp_zh.jpg","analyResult":0,"checkDate":"2018-04-28 23:00:01"},
-        {"trainInfoId":14,"partNo":"1","url":"http://106.12.21.105/page/tmp_zh.jpg","analyResult":0,"checkDate":"2018-04-28 23:00:01"},
-        {"trainInfoId":14,"partNo":"2","url":"http://106.12.21.105/page/tmp_zh.jpg","analyResult":0,"checkDate":"2018-04-28 23:00:01"},
-        {"trainInfoId":14,"partNo":"3","url":"http://106.12.21.105/page/tmp_zh.jpg","analyResult":1,"checkDate":"2018-04-28 23:00:01","errorReason":"这里是故障原因"},
-        {"trainInfoId":14,"partNo":"1","url":"http://106.12.21.105/page/tmp_train.jpg","analyResult":0,"checkDate":"2018-04-28 23:00:01"},
-        {"trainInfoId":14,"partNo":"4","url":"http://106.12.21.105/page/tmp_zh.jpg","analyResult":0,"checkDate":"2018-04-28 23:00:01"},
-        {"trainInfoId":14,"partNo":"1","url":"http://106.12.21.105/page/tmp_zh.jpg","analyResult":0,"checkDate":"2018-04-28 23:00:01"},
-        {"trainInfoId":14,"partNo":"5-1","url":"http://106.12.21.105/page/tmp_zh.jpg","analyResult":0,"checkDate":"2018-04-28 23:00:01"},
-        {"trainInfoId":14,"partNo":"5-2","url":"http://106.12.21.105/page/tmp_zh.jpg","analyResult":0,"checkDate":"2018-04-28 23:00:01"},
-        {"trainInfoId":34,"partNo":"5","url":"http://106.12.21.105/page/tmp_zh.jpg","analyResult":0,"checkDate":"2018-04-28 23:00:01"}
+        {"id": 301, "trainInfoId":14,"partNo":"1-1","url":"http://localhost:8080/static/test.jpg","analyResult":0,"checkDate":"2018-04-28 23:00:01"},
+        {"id": 302, "trainInfoId":14,"partNo":"1-2","url":"http://localhost:8080/static/test.jpg","analyResult":1,"checkDate":"2018-04-28 23:00:01"},
+        {"id": 303, "trainInfoId":14,"partNo":"1-3","url":"http://localhost:8080/static/test.jpg","analyResult":0,"checkDate":"2018-04-28 23:00:01"},
+        {"id": 304, "trainInfoId":14,"partNo":"2","url":"http://localhost:8080/static/test.jpg","analyResult":0,"checkDate":"2018-04-28 23:00:01"},
+        {"id": 305, "trainInfoId":14,"partNo":"3","url":"http://localhost:8080/static/test.jpg","analyResult":1,"checkDate":"2018-04-28 23:00:01","errorReason":"这里是故障原因"},
+        {"id": 306, "trainInfoId":14,"partNo":"4","url":"http://localhost:8080/static/test.jpg","analyResult":0,"checkDate":"2018-04-28 23:00:01"},
+        {"id": 307, "trainInfoId":14,"partNo":"5-1","url":"http://localhost:8080/static/test.jpg","analyResult":0,"checkDate":"2018-04-28 23:00:01"},
+        {"id": 308, "trainInfoId":14,"partNo":"5-2","url":"http://localhost:8080/static/test.jpg","analyResult":1,"checkDate":"2018-04-28 23:00:01"},
+        {"id": 309, "trainInfoId":14,"partNo":"5-3","url":"http://localhost:8080/static/test.jpg","analyResult":0,"checkDate":"2018-04-28 23:00:01"},
+        {"id": 310, "trainInfoId":14,"partNo":"6","url":"http://localhost:8080/static/test.jpg","analyResult":0,"checkDate":"2018-04-28 23:00:01"},
+        {"id": 311, "trainInfoId":14,"partNo":"7","url":"http://localhost:8080/static/test.jpg","analyResult":0,"checkDate":"2018-04-28 23:00:01"},
+        {"id": 322, "trainInfoId":34,"partNo":"5","url":"http://localhost:8080/static/test.jpg","analyResult":0,"checkDate":"2018-04-28 23:00:01"},
+        {"id": 314, "trainInfoId":34,"partNo":"6","url":"http://localhost:8080/static/test.jpg","analyResult":0,"checkDate":"2018-04-28 23:00:01"},
+        {"id": 315, "trainInfoId":34,"partNo":"7","url":"http://localhost:8080/static/test.jpg","analyResult":0,"checkDate":"2018-04-28 23:00:01"}
       ]
     }
   },
@@ -40,14 +43,13 @@
       "ret":"0",
       "message":"success",
       "trainInfoList":[
-        {"id":34,"railNo":"hello1","isNormal":null,"checkDate":"2018-04-28 23:00:01","railStation":"hf","errorReason":"11"},
-        {"id":17,"railNo":"ca123","isNormal":null,"checkDate":"2018-04-28 23:00:00","railStation":"hf","errorReason":"11"},
-        {"id":16,"railNo":"hello","isNormal":null,"checkDate":"2018-04-28 20:00:01","railStation":"hf","errorReason":"11"},
-        {"id":15,"railNo":"ca123","isNormal":null,"checkDate":"2018-04-28 20:00:00","railStation":"hf","errorReason":"11"},
-        {"id":14,"railNo":"hello","isNormal":null,"checkDate":"2018-04-28 23:00:01","railStation":"hf","errorReason":"11"},
-        {"id":5,"railNo":"hello","isNormal":"0","checkDate":"2018-04-21 23:00:01","railStation":"hf","errorReason":"11"},
-        {"id":2,"railNo":"ca123","isNormal":"0","checkDate":"2018-04-21 23:00:00","railStation":"hf","errorReason":"11"},
-        {"id":1,"railNo":"ca123","isNormal":"0","checkDate":"2018-04-17 23:00:00","railStation":"hf","errorReason":"11"}
+        {"id":14,"railNo":"DF07 0080","isNormal":"1","checkDate":"2018-04-28 23:00:01","railStation":"hf","errorReason":"机车标签外观有无缺损、裂纹、变形"},
+        {"id":34,"railNo":"DF07 0081","isNormal":"0","checkDate":"2018-04-28 23:00:01","railStation":"hf","errorReason":"焊装支架有无开焊、变形"},
+        {"id":17,"railNo":"DF07 0101","isNormal":null,"checkDate":"2018-04-28 23:00:00","railStation":"hf","errorReason":"6个安装螺丝有无缺失、缺损、松动"},
+        {"id":16,"railNo":"DF08 0080","isNormal":null,"checkDate":"2018-04-28 20:00:01","railStation":"hf","errorReason":"开口销有无缺失"},
+        {"id":15,"railNo":"DF07 0077","isNormal":null,"checkDate":"2018-04-28 20:00:00","railStation":"hf","errorReason":"连接电缆是否绑扎牢固、线缆固定卡有无脱落、电缆外观有无变形、缺损"},
+        {"id":16,"railNo":"DF08 0080","isNormal":null,"checkDate":"2018-04-28 20:00:01","railStation":"hf","errorReason":"开口销有无缺失"},
+        {"id":15,"railNo":"DF07 0077","isNormal":null,"checkDate":"2018-04-28 20:00:00","railStation":"hf","errorReason":"连接电缆是否绑扎牢固、线缆固定卡有无脱落、电缆外观有无变形、缺损"}
       ],
       "totalNum":8,
       "totalPage":3
@@ -61,20 +63,17 @@
       "message": "ok",
       "trainInfos": [],
       "trainDetailInfos": [
-        {
-          "trainInfoId": 14,
-          "partNo": "1",
-          "url": "http://106.12.21.105/page/tmp_zh.jpg",
-          "analyResult": 1,
-          "checkDate": "2018-04-28 23:00:01"
-        },
-        {
-          "trainInfoId": 14,
-          "partNo": "2",
-          "url": "http://106.12.21.105/page/tmp_zh.jpg",
-          "analyResult": 1,
-          "checkDate": "2018-04-28 23:00:01"
-        }
+        {"id": 301, "trainInfoId":14,"partNo":"1-1","url":"http://localhost:8080/static/test.jpg","analyResult":0,"checkDate":"2018-04-28 23:00:01"},
+        {"id": 302, "trainInfoId":14,"partNo":"1-2","url":"http://localhost:8080/static/test.jpg","analyResult":0,"checkDate":"2018-04-28 23:00:01"},
+        {"id": 303, "trainInfoId":14,"partNo":"1-3","url":"http://localhost:8080/static/test.jpg","analyResult":1,"checkDate":"2018-04-28 23:00:01"},
+        {"id": 304, "trainInfoId":14,"partNo":"2","url":"http://localhost:8080/static/test.jpg","analyResult":0,"checkDate":"2018-04-28 23:00:01"},
+        {"id": 305, "trainInfoId":14,"partNo":"3","url":"http://localhost:8080/static/test.jpg","analyResult":1,"checkDate":"2018-04-28 23:00:01","errorReason":"这里是故障原因"},
+        {"id": 306, "trainInfoId":14,"partNo":"4","url":"http://localhost:8080/static/test.jpg","analyResult":0,"checkDate":"2018-04-28 23:00:01"},
+        {"id": 307, "trainInfoId":14,"partNo":"5-1","url":"http://localhost:8080/static/test.jpg","analyResult":0,"checkDate":"2018-04-28 23:00:01"},
+        {"id": 308, "trainInfoId":14,"partNo":"5-2","url":"http://localhost:8080/static/test.jpg","analyResult":1,"checkDate":"2018-04-28 23:00:01"},
+        {"id": 309, "trainInfoId":14,"partNo":"5-3","url":"http://localhost:8080/static/test.jpg","analyResult":0,"checkDate":"2018-04-28 23:00:01"},
+        {"id": 310, "trainInfoId":14,"partNo":"6","url":"http://localhost:8080/static/test.jpg","analyResult":0,"checkDate":"2018-04-28 23:00:01"},
+        {"id": 311, "trainInfoId":14,"partNo":"7","url":"http://localhost:8080/static/test.jpg","analyResult":0,"checkDate":"2018-04-28 23:00:01"}
       ]
     }
   },

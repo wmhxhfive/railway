@@ -22,9 +22,12 @@ table.list-table a:active{color: #ff6122;}
 table.list-table td.ok {color: #176516;}
 table.list-table td.error {color: #ff0000;}
 table.list-table th {background-image: radial-gradient(#d6edfc, #8fcbf4);background-repeat:repeat-x;height:30px;}
-.page-box {width: 100%;position: relative;}
+.page-box {width: 100%;position: relative;height: 60px;}
 .page-inner {position: absolute;right: 20px;}
-.page-inner a {padding: 10px;background-color: #89c4eb;color: #fff;margin: 0 2px;cursor: pointer;}
+.page-inner a {padding: 10px;background-color: #89c4eb;color: #fff;margin: 0 4px;cursor: pointer;display: block;float: left;}
 .page-inner a:hover{background-color: #4b81a5;}
 .page-inner a.dis {background-color: #c0baba;}
+.page-inner span,.page-inner input{display: block;float: left;line-height: 40px;}
+.page-box .tmp-page{width: 50px;height: 41px;box-sizing: border-box;padding-right: 5px;margin-left: 5px;text-align: right;-moz-appearance: textfield;}
+.page-box .tmp-page::-webkit-inner-spin-button,.page-box .tmp-page::-webkit-outer-spin-button{-webkit-appearance: none;}
 .alert-box {z-index: 9999;position: fixed;top: 50%;left: 50%;background: rgba(0, 0, 0, 0.7);padding: 15px 30px;color: #ffffff;border-radius: 5px;transform:translate(-50%, -50%);}
