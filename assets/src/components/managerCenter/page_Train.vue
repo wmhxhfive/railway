@@ -113,7 +113,9 @@ export default {
   	this.loadTrainList();
   },
   methods:{
-  	search(){  
+  	search(){
+			this.tmpPage = 1
+			this.page = 1
   		this.loadTrainList();
   	},
   	showDetail(info){
@@ -134,7 +136,8 @@ export default {
 	        this.showDetailDialog = true;
 	      }else{
 	      	this.trainDetailInfo = [];
-	        this.showDetailDialog = false;
+					this.showDetailDialog = false;
+					alert(ret.message)
 	      }
 	    })
 		},
@@ -145,11 +148,10 @@ export default {
 				if(trainDetailInfo.Index.indexOf(parts[0])<0){
 					trainDetailInfo.Index.push(parts[0])
 					trainDetailInfo.list.push({ ...lists[key], partNumber: parts[0] })
-				}else{
-					if(!trainDetailInfo[parts[0]])
-					trainDetailInfo[parts[0]] = []
-            trainDetailInfo[parts[0]].push({ ...lists[key], partNumber: parts[0], partIndex: parts[1] })
 				}
+				if(!trainDetailInfo[parts[0]])
+					trainDetailInfo[parts[0]] = []
+				trainDetailInfo[parts[0]].push({ ...lists[key], partNumber: parts[0], partIndex: parts[1] })
       }
       console.log('List====>', trainDetailInfo)
       this.trainDetailInfo = trainDetailInfo
@@ -246,13 +248,12 @@ export default {
 }
 
 .detail-dialog{
-	position: absolute;
+	position: fixed;
 	top: 0;
 	bottom: 0;
 	width: 100%;
 	z-index: 11;
 	background-color: #fff;
-
 }
 .close{
 	width: 40px;

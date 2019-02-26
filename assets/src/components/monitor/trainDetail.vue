@@ -10,7 +10,7 @@
         <img :src="item.url"/>
         <span class="deleteBtn" v-show="admin" @click.stop="deleteItem(item.id, $event)">删除</span>
         <div class="part-no">{{railNoList[item.partNumber]}}</div>
-        <a class="images-count" v-if="trainDetailInfo[item.partNumber]" 
+        <a class="images-count" v-if="trainDetailInfo[item.partNumber] && trainDetailInfo[item.partNumber].length>1" 
           @click.stop="showMutilImages(trainDetailInfo[item.partNumber])"
           href="#/multi" target="_blank">
           <img src="../../assets/images/multi-pic.png"/>

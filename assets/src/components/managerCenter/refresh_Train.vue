@@ -44,6 +44,8 @@
 	    			<span>第{{page}}页 / 共{{totalPage}}页</span>
 	    			<a :class="{dis: page<=1}" @click="page--">上一页</a>
 	    			<a :class="{dis: page>=totalPage}" @click="page++">下一页</a>
+						<input class="tmp-page" type="number" v-model="tmpPage"/>
+	    			<a @click="gotoPage" style="margin: 0;">确定</a>
 	    		</div>
 	    	</div>
 		</div>
@@ -68,6 +70,7 @@ export default {
     	railStation:'合肥',
     	page: 1,// 接口从0开始
     	pageSize: 20,
+			tmpPage: 1,
     	totalPage: 0,
     	searchList: []
     }
@@ -75,16 +78,16 @@ export default {
   mounted(){
   	var self = this;
   	//日期时间范围
-	laydate.render({
-	  elem: '#time',type: 'datetime',range: true,//date time datetime
-	  calendar: true,
-	  format:'yyyy-MM-dd',
-	  done: function(value, date, endDate){
-	    console.log(value); //得到日期生成的值，如：2017-08-18
-	    self.beginCheckDate=value.substr(0, 19);
-  		self.endCheckDate=value.substring(22)
-	  }
-	})
+		laydate.render({
+			elem: '#time',type: 'datetime',range: true,//date time datetime
+			calendar: true,
+			format:'yyyy-MM-dd',
+			done: function(value, date, endDate){
+				console.log(value); //得到日期生成的值，如：2017-08-18
+				self.beginCheckDate=value.substr(0, 19);
+				self.endCheckDate=value.substring(22)
+			}
+		})
 
   	this.loadTrainList();
   	this.timer = setInterval(()=>this.loadTrainList(), 30000);
@@ -93,6 +96,8 @@ export default {
   },
   methods:{
   	search(){  
+			this.tmpPage = 1
+			this.page = 1
   		this.loadTrainList();
   	},
   	saveDetail(item){
@@ -125,7 +130,21 @@ export default {
 	      	this.searchList = [];
 	      }
 	    })
+		},
+		gotoPage (){
+			if(this.tmpPage < this.totalPage){
+				this.page = this.tmpPage
+			}else{
+				this.tmpPage = this.totalPage
+				this.page = this.totalPage
+			}
+		}
 	},
+  watch:{
+  	page(){
+  		this.loadTrainList();
+  		// this.initPageList();
+  	}
   },
   beforeDestroy(){
   	this.timer && clearInterval(this.timer)
@@ -161,15 +180,6 @@ export default {
 	margin-right: 10px; 
 }
 
-.detail-dialog{
-	position: absolute;
-	top: 0;
-	bottom: 0;
-	width: 100%;
-	z-index: 11;
-	background-color: #fff;
-
-}
 .close{
 	width: 40px;
 	height: 40px;
