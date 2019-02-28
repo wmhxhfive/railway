@@ -63,6 +63,7 @@ export default {
   mixins: [localStore],
   data () {
     return {
+			timer: null,
     	railNo: '',
     	beginCheckDate: '',
     	endCheckDate: '',

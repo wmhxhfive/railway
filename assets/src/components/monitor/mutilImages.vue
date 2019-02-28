@@ -1,10 +1,10 @@
 <template>
   <section>
     <ul class="img-list">
-      <li v-for="item in trainDetailInfo" :class="{'is-error':item.analyResult}" @click="showImage(item)" :id="'li_'+item.id">
+      <li v-for="item,index in trainDetailInfo" :class="{'is-error':item.analyResult}" @click="showImage(item)" :id="'li_'+item.id">
         <img :src="item.url"/>
         <span class="deleteBtn" v-show="admin" @click.stop="deleteItem(item.id, $event)">删除</span>
-        <div class="part-no">{{railNoList[item.partNumber]}}{{item.partIndex}}</div>
+        <div class="part-no">{{railNoList[item.partNumber]}} ({{index+1}})</div>
         <span class="analysis-res" v-if="item.analyResult">
           <img src="../../assets/images/warn-tg.png"/>
         </span>
@@ -47,8 +47,8 @@ export default {
       rotate: 0,
       admin: false, // 控制“删除”按钮
       railNoList:{
-        '1': 'Ⅰ左信号感应器',
-        '2': 'Ⅰ右信号感应器',
+        '1': '左信号感应器',
+        '2': '右信号感应器',
         '3': 'Ⅱ左信号感应器',
         '4': 'Ⅱ右信号感应器',
         '5': '左侧速度传感器',

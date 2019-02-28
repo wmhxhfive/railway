@@ -81,7 +81,7 @@ export default {
   height: 40px;
   background: url('../../assets/images/train-arrow.png') no-repeat;
   background-size: 18px;
-  right: 0;
+  right: -2px;
   top: calc(7vh - 18px);
   position: absolute;
 }

@@ -25,6 +25,7 @@ export default {
   mixins: [localStore],
   data () {
     return {
+      timer: null,
       trainIndex: 0,
       trainInfos: [], //*/,
       trainDetailInfos: [],//*/,
@@ -37,7 +38,7 @@ export default {
   },
   created(){
     this.init();
-    this.timer && setInterval(()=>this.init(), 30000)
+    this.timer = setInterval(()=>{this.init()}, 30000)
   },
   methods:{
     init() {
